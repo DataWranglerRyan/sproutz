@@ -11,6 +11,9 @@ class Species(db.Model):
     soil_type = db.Column(db.String(200))
     common_issues = db.Column(db.Text)
     care_tips = db.Column(db.Text)
+    fertilizer_type = db.Column(db.String(200))
+    fertilizer_schedule = db.Column(db.String(200))
+    fertilizer_notes = db.Column(db.Text)
     plants = db.relationship("Plant", backref="species", lazy=True)
     issues = db.relationship("SpeciesIssue", backref="species", lazy=True)
 

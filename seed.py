@@ -11,6 +11,9 @@ COMMON_SPECIES = [
         "soil_type": "Well-draining potting mix",
         "common_issues": "Yellow leaves (overwatering), brown tips (underwatering), leggy growth (low light)",
         "care_tips": "Very forgiving and great for beginners. Trim vines to encourage bushier growth. Can grow in water indefinitely.",
+        "fertilizer_type": "Balanced liquid fertilizer (10-10-10 or 20-20-20)",
+        "fertilizer_schedule": "Once a month during spring and summer",
+        "fertilizer_notes": "Dilute to half strength. No fertilizer needed in fall/winter. Over-fertilizing causes brown leaf edges.",
     },
     {
         "name": "Snake Plant",
@@ -19,6 +22,9 @@ COMMON_SPECIES = [
         "soil_type": "Sandy, well-draining cactus/succulent mix",
         "common_issues": "Root rot (overwatering), mushy leaves, scarring from cold drafts",
         "care_tips": "Extremely drought-tolerant. Let soil dry completely between waterings. One of the best air-purifying plants.",
+        "fertilizer_type": "Balanced houseplant fertilizer (10-10-10)",
+        "fertilizer_schedule": "Once in spring and once in summer",
+        "fertilizer_notes": "Very light feeder — less is more. Dilute to half strength. Skip fertilizer entirely in fall/winter.",
     },
     {
         "name": "Monstera",
@@ -27,6 +33,9 @@ COMMON_SPECIES = [
         "soil_type": "Peat-based, well-draining mix with perlite",
         "common_issues": "Yellow leaves (overwatering), brown edges (low humidity), no fenestrations (insufficient light)",
         "care_tips": "Provide a moss pole for climbing. Wipe leaves to remove dust. Increase humidity for larger leaves with more splits.",
+        "fertilizer_type": "Balanced liquid fertilizer (20-20-20) or fertilizer higher in nitrogen",
+        "fertilizer_schedule": "Every 2-4 weeks during spring and summer",
+        "fertilizer_notes": "Supports large leaf growth. Reduce to monthly in fall, stop in winter. Flush soil every few months to prevent salt buildup.",
     },
     {
         "name": "Fiddle Leaf Fig",
@@ -35,6 +44,9 @@ COMMON_SPECIES = [
         "soil_type": "Well-draining, nutrient-rich potting mix",
         "common_issues": "Brown spots (inconsistent watering), leaf drop (drafts or moving), root rot",
         "care_tips": "Keep in one spot — they dislike being moved. Water when top 2 inches of soil are dry. Rotate monthly for even growth.",
+        "fertilizer_type": "Liquid fertilizer with 3-1-2 NPK ratio (e.g., 9-3-6)",
+        "fertilizer_schedule": "Every 4 weeks during growing season (spring/summer)",
+        "fertilizer_notes": "High nitrogen supports leaf growth. Don't fertilize new plants for 1 month after repotting. Stop in winter.",
     },
     {
         "name": "Spider Plant",
@@ -43,6 +55,9 @@ COMMON_SPECIES = [
         "soil_type": "General-purpose potting mix",
         "common_issues": "Brown tips (fluoride in water or low humidity), pale leaves (too much sun)",
         "care_tips": "Use distilled or rainwater to avoid brown tips. Produces baby 'spiderettes' you can propagate. Great hanging plant.",
+        "fertilizer_type": "Balanced liquid fertilizer (10-10-10 or 20-20-20)",
+        "fertilizer_schedule": "Every 2 weeks during spring and summer",
+        "fertilizer_notes": "Sensitive to fluoride and boron in some fertilizers — use organic if possible. Reduce to monthly in fall, skip winter.",
     },
     {
         "name": "Peace Lily",
@@ -51,6 +66,9 @@ COMMON_SPECIES = [
         "soil_type": "Peat-based mix that retains some moisture",
         "common_issues": "Drooping (underwatering — recovers quickly), brown tips (low humidity or chemicals in water)",
         "care_tips": "Will dramatically droop when thirsty but bounces back fast. Blooms more with brighter light. Toxic to pets.",
+        "fertilizer_type": "Balanced liquid fertilizer (20-20-20)",
+        "fertilizer_schedule": "Every 6-8 weeks during spring and summer",
+        "fertilizer_notes": "Light feeder. Too much fertilizer causes brown leaf tips and prevents blooming. Dilute to quarter strength.",
     },
     {
         "name": "Succulent",
@@ -59,6 +77,9 @@ COMMON_SPECIES = [
         "soil_type": "Gritty cactus/succulent mix with sand and perlite",
         "common_issues": "Etiolation/stretching (not enough light), mushy leaves (overwatering), mealy bugs",
         "care_tips": "Soak and dry method — water thoroughly, then let soil dry completely. More light = more compact, colorful growth.",
+        "fertilizer_type": "Cactus/succulent fertilizer or diluted balanced fertilizer",
+        "fertilizer_schedule": "Once a month during spring and summer only",
+        "fertilizer_notes": "Dilute to quarter strength. Never fertilize dormant plants in winter. Too much causes leggy, weak growth.",
     },
     {
         "name": "Cactus",
@@ -67,6 +88,9 @@ COMMON_SPECIES = [
         "soil_type": "Very fast-draining cactus mix with extra sand/gravel",
         "common_issues": "Root rot (overwatering), etiolation (insufficient light), scarring from sunburn if moved suddenly",
         "care_tips": "Water even less in winter (once a month). Acclimate gradually to direct sun. Use terracotta pots for faster drying.",
+        "fertilizer_type": "Low-nitrogen cactus fertilizer (2-7-7 or 1-2-2 ratio)",
+        "fertilizer_schedule": "2-3 times total during spring/summer growing season",
+        "fertilizer_notes": "Very light feeder. High nitrogen causes soft, vulnerable growth. Stop entirely in fall/winter dormancy.",
     },
     {
         "name": "Fern",
@@ -75,6 +99,9 @@ COMMON_SPECIES = [
         "soil_type": "Rich, moisture-retaining peat-based mix",
         "common_issues": "Crispy fronds (low humidity), yellowing (too much light), dropping leaves (underwatering)",
         "care_tips": "Loves humidity — mist regularly or place near a humidifier. Keep soil consistently moist but not soggy. Great for bathrooms.",
+        "fertilizer_type": "Balanced liquid fertilizer (20-20-20) or fish emulsion",
+        "fertilizer_schedule": "Every 2-4 weeks during spring and summer",
+        "fertilizer_notes": "Dilute to half strength — ferns have sensitive roots. Organic options like fish emulsion work great. Reduce in winter.",
     },
     {
         "name": "Canna Lily",
@@ -83,6 +110,9 @@ COMMON_SPECIES = [
         "soil_type": "Rich, moist, well-draining soil with organic matter",
         "common_issues": "Rust fungus (orange spots on leaves), caterpillars (leaf rollers), rhizome rot in waterlogged soil",
         "care_tips": "Heavy feeders — fertilize monthly during growing season. Cut spent flower stalks to encourage more blooms. Dig up rhizomes before frost in cold climates and store over winter.",
+        "fertilizer_type": "High-phosphorus fertilizer (5-10-5) or bloom booster",
+        "fertilizer_schedule": "Monthly during growing season (spring through fall)",
+        "fertilizer_notes": "Heavy feeder that rewards generous fertilizing. Use slow-release granules at planting, then liquid monthly. Phosphorus encourages blooms.",
     },
     {
         "name": "Rubber Plant",
@@ -91,6 +121,9 @@ COMMON_SPECIES = [
         "soil_type": "Well-draining general potting mix with perlite",
         "common_issues": "Dropping leaves (overwatering or cold drafts), leggy growth (low light), dust buildup on leaves",
         "care_tips": "Wipe large leaves with a damp cloth monthly. Prune to desired shape — will branch from cut points. Likes to dry out between waterings.",
+        "fertilizer_type": "Balanced liquid fertilizer (10-10-10 or 20-20-20)",
+        "fertilizer_schedule": "Every 2-4 weeks during spring and summer",
+        "fertilizer_notes": "Moderate feeder. Dilute to half strength. Yellow lower leaves can indicate need for fertilizer. Stop in winter.",
     },
 ]
 
@@ -163,6 +196,9 @@ with app.app_context():
             existing.soil_type = data["soil_type"]
             existing.common_issues = data["common_issues"]
             existing.care_tips = data["care_tips"]
+            existing.fertilizer_type = data.get("fertilizer_type", "")
+            existing.fertilizer_schedule = data.get("fertilizer_schedule", "")
+            existing.fertilizer_notes = data.get("fertilizer_notes", "")
         else:
             db.session.add(Species(**data))
     db.session.commit()

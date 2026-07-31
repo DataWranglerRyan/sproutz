@@ -27,6 +27,32 @@
     {% endif %}
 </div>
 
+{% if species.fertilizer_type or species.fertilizer_schedule %}
+<h2>🧪 Fertilizer Schedule</h2>
+<div class="care-grid">
+    {% if species.fertilizer_type %}
+    <div class="care-card">
+        <h3>Type</h3>
+        <p>{{ species.fertilizer_type }}</p>
+    </div>
+    {% endif %}
+
+    {% if species.fertilizer_schedule %}
+    <div class="care-card">
+        <h3>Schedule</h3>
+        <p>{{ species.fertilizer_schedule }}</p>
+    </div>
+    {% endif %}
+
+    {% if species.fertilizer_notes %}
+    <div class="care-card">
+        <h3>Notes</h3>
+        <p>{{ species.fertilizer_notes }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
 {% if species.issues %}
 <h2>⚠️ Common Issues &amp; Solutions</h2>
 <table class="issues-table">
