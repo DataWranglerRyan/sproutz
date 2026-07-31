@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Manage Species</h1>
+
+<form method="POST">
+    <label for="name">Species Name:</label>
+    <input type="text" id="name" name="name" required placeholder="e.g. Pothos">
+
+    <label for="watering_interval_days">Watering Interval (days):</label>
+    <input type="number" id="watering_interval_days" name="watering_interval_days" required min="1" placeholder="7">
+
+    <button type="submit" class="btn">Add Species</button>
+</form>
+
+{% if species %}
+<h2>Existing Species</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Water Every</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in species %}
+        <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.watering_interval_days }} days</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

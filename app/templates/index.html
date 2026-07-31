@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>🌱 My Plants</h1>
+
+{% if plants %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Species</th>
+            <th>Last Watered</th>
+            <th>Next Watering</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for plant in plants %}
+        <tr class="{{ 'overdue' if plant.is_overdue else '' }}">
+            <td>{{ plant.name }}</td>
+            <td>{{ plant.species.name }}</td>
+            <td>{{ plant.last_watered.strftime('%b %d, %Y') }}</td>
+            <td>{{ plant.next_watering.strftime('%b %d, %Y') }}</td>
+            <td>
+                {% if plant.is_overdue %}
+                    <span class="badge overdue">Overdue!</span>
+                {% else %}
+                    <span class="badge ok">{{ plant.days_until_watering }} day(s)</span>
+                {% endif %}
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('main.water_plant', plant_id=plant.id) }}" style="display:inline">
+                    <button type="submit" class="btn water">💧 Water</button>
+                </form>
+                <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}" style="display:inline">
+                    <button type="submit" class="btn delete">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No plants yet! <a href="{{ url_for('main.add_plant') }}">Add your first plant</a>.</p>
+{% endif %}
+{% endblock %}
