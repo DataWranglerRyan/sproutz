@@ -8,6 +8,11 @@ main = Blueprint("main", __name__)
 
 
 @main.route("/")
+def home():
+    return redirect(url_for("main.dashboard"))
+
+
+@main.route("/plants")
 def index():
     plants = Plant.query.all()
     plants_sorted = sorted(plants, key=lambda p: p.next_watering)
