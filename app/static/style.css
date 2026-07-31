@@ -148,6 +148,45 @@ textarea {
     color: #b91c1c;
 }
 
+.issues-fieldset {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.issues-fieldset legend {
+    font-weight: 600;
+    padding: 0 0.5rem;
+}
+
+.issue-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+}
+
+.issue-row input {
+    flex: 1;
+    margin-top: 0;
+}
+
+.issue-row .remove-row {
+    margin-top: 0;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+.add-issue-btn {
+    background: #059669;
+    margin-top: 0.5rem;
+}
+
+.add-issue-btn:hover {
+    background: #047857;
+}
+
 .btn {
     display: inline-block;
     margin-top: 1rem;

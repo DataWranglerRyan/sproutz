@@ -16,11 +16,23 @@
     <label for="soil_type">Soil Type:</label>
     <input type="text" id="soil_type" name="soil_type" placeholder="e.g. Well-draining potting mix">
 
-    <label for="common_issues">Common Issues:</label>
+    <label for="common_issues">Common Issues (general notes):</label>
     <textarea id="common_issues" name="common_issues" rows="2" placeholder="e.g. Yellow leaves from overwatering"></textarea>
 
     <label for="care_tips">Care Tips:</label>
     <textarea id="care_tips" name="care_tips" rows="2" placeholder="e.g. Let soil dry between waterings"></textarea>
+
+    <fieldset class="issues-fieldset">
+        <legend>Common Issues &amp; Solutions</legend>
+        <div id="issues-container">
+            <div class="issue-row">
+                <input type="text" name="issue[]" placeholder="Issue (e.g. Yellow leaves)">
+                <input type="text" name="solution[]" placeholder="Solution (e.g. Reduce watering)">
+                <button type="button" class="btn delete remove-row">✕</button>
+            </div>
+        </div>
+        <button type="button" id="add-issue" class="btn add-issue-btn">+ Add Issue</button>
+    </fieldset>
 
     <button type="submit" class="btn">Add Species</button>
 </form>
@@ -48,4 +60,24 @@
     </tbody>
 </table>
 {% endif %}
+
+<script>
+document.getElementById('add-issue').addEventListener('click', function() {
+    const container = document.getElementById('issues-container');
+    const row = document.createElement('div');
+    row.className = 'issue-row';
+    row.innerHTML = `
+        <input type="text" name="issue[]" placeholder="Issue (e.g. Yellow leaves)">
+        <input type="text" name="solution[]" placeholder="Solution (e.g. Reduce watering)">
+        <button type="button" class="btn delete remove-row">✕</button>
+    `;
+    container.appendChild(row);
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('remove-row')) {
+        e.target.parentElement.remove();
+    }
+});
+</script>
 {% endblock %}

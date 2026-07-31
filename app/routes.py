@@ -63,6 +63,20 @@ def manage_species():
             care_tips=care_tips,
         )
         db.session.add(species)
+        db.session.flush()  # get species.id before adding issues
+
+        # Add issue/solution pairs
+        issues = request.form.getlist("issue[]")
+        solutions = request.form.getlist("solution[]")
+        for issue, solution in zip(issues, solutions):
+            if issue.strip() and solution.strip():
+                from app.models import SpeciesIssue
+                db.session.add(SpeciesIssue(
+                    species_id=species.id,
+                    issue=issue.strip(),
+                    solution=solution.strip(),
+                ))
+
         db.session.commit()
         flash(f"Added species: {name}", "success")
         return redirect(url_for("main.manage_species"))
