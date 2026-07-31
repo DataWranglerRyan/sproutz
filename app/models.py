@@ -12,6 +12,14 @@ class Species(db.Model):
     common_issues = db.Column(db.Text)
     care_tips = db.Column(db.Text)
     plants = db.relationship("Plant", backref="species", lazy=True)
+    issues = db.relationship("SpeciesIssue", backref="species", lazy=True)
+
+
+class SpeciesIssue(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    species_id = db.Column(db.Integer, db.ForeignKey("species.id"), nullable=False)
+    issue = db.Column(db.String(200), nullable=False)
+    solution = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f"<Species {self.name} (every {self.watering_interval_days} days)>"

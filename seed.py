@@ -1,7 +1,7 @@
 """Seed the database with common houseplant species and care tips."""
 
 from app import create_app, db
-from app.models import Species
+from app.models import Species, SpeciesIssue
 
 COMMON_SPECIES = [
     {
@@ -94,6 +94,65 @@ COMMON_SPECIES = [
     },
 ]
 
+SPECIES_ISSUES = {
+    "Pothos": [
+        ("Yellow leaves", "Reduce watering frequency — let the top inch of soil dry out between waterings"),
+        ("Brown leaf tips", "Increase watering slightly or raise humidity with a pebble tray"),
+        ("Leggy, sparse growth", "Move to a brighter spot with more indirect light; trim long vines to encourage fullness"),
+    ],
+    "Snake Plant": [
+        ("Mushy/soft leaves", "Stop watering immediately. Remove affected leaves and let soil dry completely. Repot if root rot is extensive"),
+        ("Leaves falling over", "Usually overwatering — reduce frequency. Ensure pot isn't too large for the root system"),
+        ("Brown/scarred patches", "Move away from cold drafts or windows. Avoid temperatures below 50°F"),
+    ],
+    "Monstera": [
+        ("Yellow leaves", "Cut back on watering. Check for root rot and repot in fresh soil if needed"),
+        ("Brown crispy edges", "Increase humidity — mist daily, use a humidifier, or place on a pebble tray"),
+        ("No leaf fenestrations", "Provide more bright indirect light. Young plants need maturity + light to develop splits"),
+        ("Drooping leaves", "Usually needs water. Soak thoroughly and it should perk up within hours"),
+    ],
+    "Fiddle Leaf Fig": [
+        ("Brown spots on leaves", "Establish a consistent watering schedule. Check for root rot if spots are dark and spreading"),
+        ("Dropping leaves", "Avoid moving the plant. Keep away from drafts and heating/AC vents"),
+        ("Red/brown spots near veins", "Likely root rot — reduce watering, ensure drainage, repot in dry soil if severe"),
+    ],
+    "Spider Plant": [
+        ("Brown leaf tips", "Switch to distilled or rainwater — spider plants are sensitive to fluoride and chlorine"),
+        ("Pale/faded leaves", "Move to a spot with less direct sunlight; they prefer bright indirect light"),
+        ("No babies/spiderettes", "Needs to be slightly root-bound and get enough light. Avoid repotting too frequently"),
+    ],
+    "Peace Lily": [
+        ("Dramatic drooping", "Water thoroughly — peace lilies droop when thirsty but recover quickly within an hour"),
+        ("Brown leaf tips", "Use filtered water and increase humidity. Trim brown tips with scissors"),
+        ("No flowers", "Move to brighter indirect light. They need sufficient light energy to produce blooms"),
+    ],
+    "Succulent": [
+        ("Stretched/elongated growth", "Needs much more light. Move to the brightest window or add a grow light"),
+        ("Mushy translucent leaves", "Overwatered — remove affected leaves, let soil dry, reduce watering dramatically"),
+        ("White cottony spots (mealybugs)", "Dab with rubbing alcohol using a cotton swab. Isolate plant and treat weekly until clear"),
+    ],
+    "Cactus": [
+        ("Soft/mushy base", "Root rot from overwatering. Cut away rot, let callus for days, repot in dry soil"),
+        ("Leaning/stretching toward light", "Rotate regularly and provide more direct sunlight hours"),
+        ("White/brown scaly patches", "Likely sunburn from sudden direct sun exposure. Acclimate gradually over 1-2 weeks"),
+    ],
+    "Fern": [
+        ("Crispy/brown fronds", "Humidity too low — mist daily, use a humidifier, or move to bathroom"),
+        ("Yellowing fronds", "Too much direct light — move to a shadier spot with filtered light"),
+        ("Dropping leaves", "Soil is too dry — keep consistently moist (not soggy). Never let it fully dry out"),
+    ],
+    "Rubber Plant": [
+        ("Dropping lower leaves", "Overwatering or cold drafts. Let top 2 inches dry between waterings and move from drafty areas"),
+        ("Leggy with few leaves", "Needs more light. Prune the top to encourage branching"),
+        ("Dusty/dull leaves", "Wipe with a damp cloth monthly. Dust blocks light absorption and slows growth"),
+    ],
+    "Canna Lily": [
+        ("Orange spots on leaves (rust)", "Remove affected leaves immediately. Improve air circulation and avoid overhead watering"),
+        ("Rolled/chewed leaves (caterpillars)", "Inspect and hand-pick leaf roller caterpillars. Use Bt (Bacillus thuringiensis) spray for infestations"),
+        ("Mushy rhizomes", "Improve drainage. Dig up, cut away rotted sections, let dry, and replant in better-draining soil"),
+    ],
+}
+
 app = create_app()
 
 with app.app_context():
@@ -107,4 +166,14 @@ with app.app_context():
         else:
             db.session.add(Species(**data))
     db.session.commit()
-    print(f"Seeded/updated {len(COMMON_SPECIES)} species with care tips.")
+
+    # Seed issues/solutions
+    for species_name, issues in SPECIES_ISSUES.items():
+        species = Species.query.filter_by(name=species_name).first()
+        if species:
+            # Clear existing issues to avoid duplicates on re-seed
+            SpeciesIssue.query.filter_by(species_id=species.id).delete()
+            for issue, solution in issues:
+                db.session.add(SpeciesIssue(species_id=species.id, issue=issue, solution=solution))
+    db.session.commit()
+    print(f"Seeded/updated {len(COMMON_SPECIES)} species with care tips and issue/solution pairs.")

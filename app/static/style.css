@@ -133,6 +133,21 @@ textarea {
     color: #2d6a4f;
 }
 
+.issues-table {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.issues-table td {
+    vertical-align: top;
+}
+
+.issue-cell {
+    font-weight: 600;
+    white-space: nowrap;
+    color: #b91c1c;
+}
+
 .btn {
     display: inline-block;
     margin-top: 1rem;

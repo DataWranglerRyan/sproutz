@@ -19,13 +19,6 @@
     </div>
     {% endif %}
 
-    {% if species.common_issues %}
-    <div class="care-card">
-        <h3>⚠️ Common Issues</h3>
-        <p>{{ species.common_issues }}</p>
-    </div>
-    {% endif %}
-
     {% if species.care_tips %}
     <div class="care-card">
         <h3>💡 Care Tips</h3>
@@ -33,6 +26,26 @@
     </div>
     {% endif %}
 </div>
+
+{% if species.issues %}
+<h2>⚠️ Common Issues &amp; Solutions</h2>
+<table class="issues-table">
+    <thead>
+        <tr>
+            <th>Issue</th>
+            <th>Solution</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in species.issues %}
+        <tr>
+            <td class="issue-cell">{{ item.issue }}</td>
+            <td>{{ item.solution }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 
 <a href="{{ url_for('main.manage_species') }}" class="btn">← Back to Species</a>
 {% endblock %}
