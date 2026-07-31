@@ -321,6 +321,110 @@ textarea {
 }
 
 /* Timeline / Dashboard */
+.calendar-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.calendar-month {
+    text-align: center;
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+    color: #1b4332;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.calendar-header {
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #6b7280;
+    padding: 0.25rem 0;
+    text-transform: uppercase;
+}
+
+.calendar-cell {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    position: relative;
+    gap: 2px;
+}
+
+.calendar-cell.empty {
+    background: transparent;
+}
+
+.calendar-cell.today {
+    background: #2d6a4f;
+    color: white;
+}
+
+.calendar-cell.today .calendar-day-num {
+    font-weight: 700;
+}
+
+.calendar-cell.has-watering:not(.today) {
+    background: #f0fdf4;
+}
+
+.calendar-cell.is-overdue:not(.today) {
+    background: #fef2f2;
+}
+
+.calendar-day-num {
+    font-size: 0.85rem;
+}
+
+.calendar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.calendar-dot.scheduled {
+    background: #2d6a4f;
+}
+
+.calendar-dot.overdue {
+    background: #dc2626;
+}
+
+.calendar-dot.today-dot {
+    background: #2d6a4f;
+    width: 8px;
+    height: 8px;
+    border: 2px solid #2d6a4f;
+    background: white;
+}
+
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
 .timeline {
     display: flex;
     flex-direction: column;

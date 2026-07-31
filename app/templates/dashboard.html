@@ -3,6 +3,39 @@
 {% block content %}
 <h1>📅 Dashboard</h1>
 
+<!-- Monthly Calendar -->
+<div class="calendar-container">
+    <h2 class="calendar-month">{{ month_name }}</h2>
+    <div class="calendar-grid">
+        <div class="calendar-header">Sun</div>
+        <div class="calendar-header">Mon</div>
+        <div class="calendar-header">Tue</div>
+        <div class="calendar-header">Wed</div>
+        <div class="calendar-header">Thu</div>
+        <div class="calendar-header">Fri</div>
+        <div class="calendar-header">Sat</div>
+        {% for day in calendar_days %}
+            {% if day is none %}
+                <div class="calendar-cell empty"></div>
+            {% else %}
+                <div class="calendar-cell {{ 'today' if day.is_today else '' }} {{ 'has-watering' if day.has_watering else '' }} {{ 'is-overdue' if day.is_overdue else '' }}">
+                    <span class="calendar-day-num">{{ day.day }}</span>
+                    {% if day.has_watering %}
+                        <span class="calendar-dot {{ 'overdue' if day.is_overdue else 'scheduled' }}"></span>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="calendar-legend">
+        <span class="legend-item"><span class="calendar-dot today-dot"></span> Today</span>
+        <span class="legend-item"><span class="calendar-dot scheduled"></span> Watering scheduled</span>
+        <span class="legend-item"><span class="calendar-dot overdue"></span> Overdue</span>
+    </div>
+</div>
+
+<!-- Timeline -->
+<h2>🗓️ Timeline</h2>
 {% if days %}
 <div class="timeline">
     {% for date, events in days.items() %}

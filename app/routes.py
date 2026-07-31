@@ -95,11 +95,16 @@ def species_detail(species_id):
 
 @main.route("/dashboard")
 def dashboard():
+    import calendar as cal
+    from collections import OrderedDict
+
     plants = Plant.query.all()
     today = datetime.utcnow().date()
 
     # Build timeline: past watering events + future scheduled waterings
     timeline_events = []
+    # Collect dates that need watering for the calendar
+    watering_dates = {}  # date -> list of plant names
 
     for plant in plants:
         # Past watering events
@@ -113,18 +118,26 @@ def dashboard():
 
         # Next upcoming watering
         next_date = plant.next_watering.date()
+        event_type = "overdue" if next_date <= today else "upcoming"
         timeline_events.append({
             "date": next_date,
             "plant_name": plant.name,
             "species_name": plant.species.name,
-            "type": "overdue" if next_date <= today else "upcoming",
+            "type": event_type,
+        })
+
+        # Add to watering_dates for calendar marking
+        if next_date not in watering_dates:
+            watering_dates[next_date] = []
+        watering_dates[next_date].append({
+            "name": plant.name,
+            "overdue": next_date <= today,
         })
 
     # Sort by date
     timeline_events.sort(key=lambda e: e["date"])
 
-    # Group events by date for the calendar view
-    from collections import OrderedDict
+    # Group events by date for the timeline
     days = OrderedDict()
     for event in timeline_events:
         date_key = event["date"]
@@ -132,4 +145,36 @@ def dashboard():
             days[date_key] = []
         days[date_key].append(event)
 
-    return render_template("dashboard.html", days=days, today=today)
+    # Build calendar data for current month
+    year = today.year
+    month = today.month
+    month_name = today.strftime("%B %Y")
+    first_weekday, num_days = cal.monthrange(year, month)
+    # Adjust so Monday=0 Sunday=6 → Sunday=0 for display
+    # Python: Monday=0, we want Sunday=0
+    first_weekday = (first_weekday + 1) % 7
+
+    calendar_days = []
+    # Leading blanks
+    for _ in range(first_weekday):
+        calendar_days.append(None)
+    # Actual days
+    for day in range(1, num_days + 1):
+        from datetime import date
+        d = date(year, month, day)
+        calendar_days.append({
+            "day": day,
+            "date": d,
+            "is_today": d == today,
+            "has_watering": d in watering_dates,
+            "is_overdue": d in watering_dates and any(p["overdue"] for p in watering_dates[d]),
+            "plants": watering_dates.get(d, []),
+        })
+
+    return render_template(
+        "dashboard.html",
+        days=days,
+        today=today,
+        calendar_days=calendar_days,
+        month_name=month_name,
+    )
