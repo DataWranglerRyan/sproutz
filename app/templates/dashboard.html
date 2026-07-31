@@ -5,15 +5,24 @@
 
 <!-- Monthly Calendar -->
 <div class="calendar-container">
-    <h2 class="calendar-month">{{ month_name }}</h2>
+    <div class="calendar-nav">
+        <a href="{{ url_for('main.dashboard', year=prev_year, month=prev_month) }}" class="calendar-nav-btn">‹</a>
+        <h2 class="calendar-month">{{ month_name }}</h2>
+        <a href="{{ url_for('main.dashboard', year=next_year, month=next_month) }}" class="calendar-nav-btn">›</a>
+    </div>
+    {% if current_year != prev_year or current_month != prev_month %}
+    <div class="calendar-today-link">
+        <a href="{{ url_for('main.dashboard') }}">Today</a>
+    </div>
+    {% endif %}
     <div class="calendar-grid">
-        <div class="calendar-header">Sun</div>
-        <div class="calendar-header">Mon</div>
-        <div class="calendar-header">Tue</div>
-        <div class="calendar-header">Wed</div>
-        <div class="calendar-header">Thu</div>
-        <div class="calendar-header">Fri</div>
-        <div class="calendar-header">Sat</div>
+        <div class="calendar-header">S</div>
+        <div class="calendar-header">M</div>
+        <div class="calendar-header">T</div>
+        <div class="calendar-header">W</div>
+        <div class="calendar-header">T</div>
+        <div class="calendar-header">F</div>
+        <div class="calendar-header">S</div>
         {% for day in calendar_days %}
             {% if day is none %}
                 <div class="calendar-cell empty"></div>

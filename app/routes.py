@@ -101,13 +101,26 @@ def dashboard():
     plants = Plant.query.all()
     today = datetime.utcnow().date()
 
+    # Get month/year from query params for navigation
+    try:
+        year = int(request.args.get("year", today.year))
+        month = int(request.args.get("month", today.month))
+    except (ValueError, TypeError):
+        year, month = today.year, today.month
+
+    # Clamp month and adjust year
+    if month < 1:
+        month = 12
+        year -= 1
+    elif month > 12:
+        month = 1
+        year += 1
+
     # Build timeline: past watering events + future scheduled waterings
     timeline_events = []
-    # Collect dates that need watering for the calendar
-    watering_dates = {}  # date -> list of plant names
+    watering_dates = {}
 
     for plant in plants:
-        # Past watering events
         for event in plant.watering_events:
             timeline_events.append({
                 "date": event.watered_at.date(),
@@ -116,7 +129,6 @@ def dashboard():
                 "type": "watered",
             })
 
-        # Next upcoming watering
         next_date = plant.next_watering.date()
         event_type = "overdue" if next_date <= today else "upcoming"
         timeline_events.append({
@@ -126,7 +138,6 @@ def dashboard():
             "type": event_type,
         })
 
-        # Add to watering_dates for calendar marking
         if next_date not in watering_dates:
             watering_dates[next_date] = []
         watering_dates[next_date].append({
@@ -134,10 +145,8 @@ def dashboard():
             "overdue": next_date <= today,
         })
 
-    # Sort by date
     timeline_events.sort(key=lambda e: e["date"])
 
-    # Group events by date for the timeline
     days = OrderedDict()
     for event in timeline_events:
         date_key = event["date"]
@@ -145,22 +154,16 @@ def dashboard():
             days[date_key] = []
         days[date_key].append(event)
 
-    # Build calendar data for current month
-    year = today.year
-    month = today.month
-    month_name = today.strftime("%B %Y")
+    # Build calendar data for selected month
+    from datetime import date
+    month_name = date(year, month, 1).strftime("%B %Y")
     first_weekday, num_days = cal.monthrange(year, month)
-    # Adjust so Monday=0 Sunday=6 → Sunday=0 for display
-    # Python: Monday=0, we want Sunday=0
-    first_weekday = (first_weekday + 1) % 7
+    first_weekday = (first_weekday + 1) % 7  # Adjust to Sunday=0
 
     calendar_days = []
-    # Leading blanks
     for _ in range(first_weekday):
         calendar_days.append(None)
-    # Actual days
     for day in range(1, num_days + 1):
-        from datetime import date
         d = date(year, month, day)
         calendar_days.append({
             "day": day,
@@ -171,10 +174,28 @@ def dashboard():
             "plants": watering_dates.get(d, []),
         })
 
+    # Prev/next month links
+    prev_month = month - 1
+    prev_year = year
+    if prev_month < 1:
+        prev_month = 12
+        prev_year -= 1
+    next_month = month + 1
+    next_year = year
+    if next_month > 12:
+        next_month = 1
+        next_year += 1
+
     return render_template(
         "dashboard.html",
         days=days,
         today=today,
         calendar_days=calendar_days,
         month_name=month_name,
+        prev_year=prev_year,
+        prev_month=prev_month,
+        next_year=next_year,
+        next_month=next_month,
+        current_year=today.year,
+        current_month=today.month,
     )
