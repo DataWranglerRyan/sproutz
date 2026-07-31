@@ -7,6 +7,10 @@ class Species(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
     watering_interval_days = db.Column(db.Integer, nullable=False)
+    sunlight = db.Column(db.String(100))
+    soil_type = db.Column(db.String(200))
+    common_issues = db.Column(db.Text)
+    care_tips = db.Column(db.Text)
     plants = db.relationship("Plant", backref="species", lazy=True)
 
     def __repr__(self):

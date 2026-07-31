@@ -50,10 +50,27 @@ def manage_species():
     if request.method == "POST":
         name = request.form["name"]
         interval = int(request.form["watering_interval_days"])
-        species = Species(name=name, watering_interval_days=interval)
+        sunlight = request.form.get("sunlight", "")
+        soil_type = request.form.get("soil_type", "")
+        common_issues = request.form.get("common_issues", "")
+        care_tips = request.form.get("care_tips", "")
+        species = Species(
+            name=name,
+            watering_interval_days=interval,
+            sunlight=sunlight,
+            soil_type=soil_type,
+            common_issues=common_issues,
+            care_tips=care_tips,
+        )
         db.session.add(species)
         db.session.commit()
         flash(f"Added species: {name}", "success")
         return redirect(url_for("main.manage_species"))
     species = Species.query.all()
     return render_template("species.html", species=species)
+
+
+@main.route("/species/<int:species_id>")
+def species_detail(species_id):
+    species = Species.query.get_or_404(species_id)
+    return render_template("species_detail.html", species=species)
