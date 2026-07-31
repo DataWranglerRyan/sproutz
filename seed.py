@@ -104,6 +104,17 @@ COMMON_SPECIES = [
         "fertilizer_notes": "Dilute to half strength — ferns have sensitive roots. Organic options like fish emulsion work great. Reduce in winter.",
     },
     {
+        "name": "Perennial Hibiscus",
+        "watering_interval_days": 2,
+        "sunlight": "Full direct sunlight (6-8 hours)",
+        "soil_type": "Rich, moist, well-draining soil amended with compost",
+        "common_issues": "Yellow leaves (overwatering or nutrient deficiency), bud drop (stress or inconsistent watering), aphids and whiteflies",
+        "care_tips": "Thrives in heat and moisture. Mulch heavily to retain soil moisture. Cut back to ground in late fall — new growth emerges in late spring. Be patient, as it's one of the last perennials to emerge.",
+        "fertilizer_type": "High-potassium fertilizer (10-4-12 or bloom booster)",
+        "fertilizer_schedule": "Every 2 weeks during growing season (late spring through early fall)",
+        "fertilizer_notes": "Heavy feeder that needs consistent nutrition for large blooms. Potassium promotes flowering. Slow-release granules in spring plus liquid feedings work well. Stop after first frost.",
+    },
+    {
         "name": "Canna Lily",
         "watering_interval_days": 2,
         "sunlight": "Full direct sunlight (6+ hours)",
@@ -183,6 +194,12 @@ SPECIES_ISSUES = {
         ("Orange spots on leaves (rust)", "Remove affected leaves immediately. Improve air circulation and avoid overhead watering"),
         ("Rolled/chewed leaves (caterpillars)", "Inspect and hand-pick leaf roller caterpillars. Use Bt (Bacillus thuringiensis) spray for infestations"),
         ("Mushy rhizomes", "Improve drainage. Dig up, cut away rotted sections, let dry, and replant in better-draining soil"),
+    ],
+    "Perennial Hibiscus": [
+        ("Yellow leaves", "Check for overwatering or iron deficiency. Amend soil with iron sulfate if pH is too high"),
+        ("Bud drop before opening", "Keep watering consistent — stress from drought or overwatering causes buds to abort. Avoid moving the plant"),
+        ("Aphids/whiteflies on new growth", "Spray with insecticidal soap or neem oil. Blast with water hose to dislodge. Treat weekly until clear"),
+        ("No new growth in spring", "Be patient — perennial hibiscus emerges very late (May-June). Don't dig up assuming it's dead"),
     ],
 }
 
