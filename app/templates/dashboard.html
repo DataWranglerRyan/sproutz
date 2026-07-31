@@ -27,7 +27,14 @@
             {% if day is none %}
                 <div class="calendar-cell empty"></div>
             {% else %}
-                <div class="calendar-cell {{ 'today' if day.is_today else '' }} {{ 'has-watering' if day.has_watering else '' }} {{ 'is-overdue' if day.is_overdue else '' }}">
+                <div class="calendar-cell {{ 'today' if day.is_today else '' }} {{ 'has-watering' if day.has_watering else '' }} {{ 'is-overdue' if day.is_overdue else '' }}"
+                     {% if day.has_watering %}
+                     role="button"
+                     tabindex="0"
+                     data-date="{{ day.date.strftime('%b %d') }}"
+                     data-plants='{{ day.plants | tojson }}'
+                     onclick="openWateringModal(this)"
+                     {% endif %}>
                     <span class="calendar-day-num">{{ day.day }}</span>
                     {% if day.has_watering %}
                         <span class="calendar-dot {{ 'overdue' if day.is_overdue else 'scheduled' }}"></span>
@@ -91,4 +98,53 @@
 {% else %}
 <p>No plants yet! <a href="{{ url_for('main.add_plant') }}">Add your first plant</a> to see your watering timeline.</p>
 {% endif %}
+
+<!-- Watering Modal (bottom sheet on mobile) -->
+<div class="modal-overlay" id="watering-modal" onclick="closeModal(event)">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="modal-title">Watering</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+        </div>
+    </div>
+</div>
+
+<script>
+function openWateringModal(cell) {
+    const date = cell.dataset.date;
+    const plants = JSON.parse(cell.dataset.plants);
+    const modal = document.getElementById('watering-modal');
+    const title = document.getElementById('modal-title');
+    const body = document.getElementById('modal-body');
+
+    title.textContent = '💧 ' + date;
+
+    let html = '<ul class="modal-plant-list">';
+    plants.forEach(function(plant) {
+        html += '<li class="modal-plant-item ' + (plant.overdue ? 'overdue' : '') + '">';
+        html += '<div class="modal-plant-info">';
+        html += '<span class="modal-plant-name">' + plant.name + '</span>';
+        html += '<span class="modal-plant-species">' + plant.species + '</span>';
+        html += '</div>';
+        html += '<form method="POST" action="/plants/' + plant.id + '/water">';
+        html += '<button type="submit" class="btn water modal-water-btn">💧 Water</button>';
+        html += '</form>';
+        html += '</li>';
+    });
+    html += '</ul>';
+
+    body.innerHTML = html;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById('watering-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+</script>
 {% endblock %}

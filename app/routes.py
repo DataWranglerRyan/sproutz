@@ -141,7 +141,9 @@ def dashboard():
         if next_date not in watering_dates:
             watering_dates[next_date] = []
         watering_dates[next_date].append({
+            "id": plant.id,
             "name": plant.name,
+            "species": plant.species.name,
             "overdue": next_date <= today,
         })
 
