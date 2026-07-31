@@ -77,6 +77,14 @@ COMMON_SPECIES = [
         "care_tips": "Loves humidity — mist regularly or place near a humidifier. Keep soil consistently moist but not soggy. Great for bathrooms.",
     },
     {
+        "name": "Canna Lily",
+        "watering_interval_days": 2,
+        "sunlight": "Full direct sunlight (6+ hours)",
+        "soil_type": "Rich, moist, well-draining soil with organic matter",
+        "common_issues": "Rust fungus (orange spots on leaves), caterpillars (leaf rollers), rhizome rot in waterlogged soil",
+        "care_tips": "Heavy feeders — fertilize monthly during growing season. Cut spent flower stalks to encourage more blooms. Dig up rhizomes before frost in cold climates and store over winter.",
+    },
+    {
         "name": "Rubber Plant",
         "watering_interval_days": 10,
         "sunlight": "Medium to bright indirect light",
