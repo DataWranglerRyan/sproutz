@@ -9,19 +9,24 @@ body {
     background: #f0f7f0;
     color: #333;
     line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
 }
 
 nav {
     background: #2d6a4f;
-    padding: 1rem 2rem;
+    padding: 0.75rem 1rem;
     display: flex;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 nav a {
     color: white;
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.95rem;
 }
 
 nav a:hover {
@@ -30,20 +35,82 @@ nav a:hover {
 
 .container {
     max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    margin: 1rem auto;
+    padding: 0 0.75rem;
 }
 
 h1 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: #1b4332;
+    font-size: 1.5rem;
 }
 
 h2 {
     margin: 1.5rem 0 1rem;
     color: #2d6a4f;
+    font-size: 1.25rem;
 }
 
+/* Card-based layout for plants on mobile instead of table */
+.plant-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.plant-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.plant-card.overdue {
+    border-left: 4px solid #dc2626;
+}
+
+.plant-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.plant-card-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1b4332;
+}
+
+.plant-card-species {
+    color: #555;
+    font-size: 0.85rem;
+}
+
+.plant-card-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.plant-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.plant-card-actions .btn {
+    margin-top: 0;
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem;
+    font-size: 1rem;
+}
+
+/* Table styles for desktop */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -54,7 +121,7 @@ table {
 }
 
 th, td {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.75rem;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
@@ -62,6 +129,7 @@ th, td {
 th {
     background: #2d6a4f;
     color: white;
+    font-size: 0.85rem;
 }
 
 tr.overdue {
@@ -71,8 +139,9 @@ tr.overdue {
 .badge {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
+    display: inline-block;
 }
 
 .badge.overdue {
@@ -97,11 +166,18 @@ label {
 
 input, select, textarea {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 8px;
+    font-size: 16px; /* prevents iOS zoom on focus */
     font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+select {
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+    padding-right: 2rem;
 }
 
 textarea {
@@ -110,27 +186,28 @@ textarea {
 
 .subtitle {
     color: #555;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
 }
 
 .care-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
 }
 
 .care-card {
     background: white;
     border-radius: 8px;
-    padding: 1.25rem;
+    padding: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .care-card h3 {
     margin-bottom: 0.5rem;
     color: #2d6a4f;
+    font-size: 1rem;
 }
 
 .issues-table {
@@ -140,17 +217,17 @@ textarea {
 
 .issues-table td {
     vertical-align: top;
+    font-size: 0.9rem;
 }
 
 .issue-cell {
     font-weight: 600;
-    white-space: nowrap;
     color: #b91c1c;
 }
 
 .issues-fieldset {
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 1rem;
     margin-top: 1rem;
 }
@@ -162,13 +239,14 @@ textarea {
 
 .issue-row {
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
 }
 
 .issue-row input {
-    flex: 1;
     margin-top: 0;
 }
 
@@ -176,6 +254,7 @@ textarea {
     margin-top: 0;
     padding: 0.4rem 0.6rem;
     font-size: 0.8rem;
+    align-self: flex-end;
 }
 
 .add-issue-btn {
@@ -190,17 +269,23 @@ textarea {
 .btn {
     display: inline-block;
     margin-top: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.25rem;
     background: #2d6a4f;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .btn:hover {
     background: #1b4332;
+}
+
+.btn:active {
+    transform: scale(0.97);
 }
 
 .btn.water {
@@ -222,7 +307,7 @@ textarea {
 .flash {
     padding: 0.75rem 1rem;
     margin-bottom: 1rem;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
 .flash.success {
@@ -233,4 +318,39 @@ textarea {
 .flash.info {
     background: #dbeafe;
     color: #1e40af;
+}
+
+/* Desktop overrides */
+@media (min-width: 768px) {
+    nav {
+        padding: 1rem 2rem;
+    }
+
+    .container {
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    .care-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .issue-row {
+        flex-direction: row;
+        align-items: center;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .issue-row input {
+        flex: 1;
+    }
+
+    .issue-cell {
+        white-space: nowrap;
+    }
 }
