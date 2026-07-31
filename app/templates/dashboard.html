@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>📅 Dashboard</h1>
+
+{% if days %}
+<div class="timeline">
+    {% for date, events in days.items() %}
+    <div class="timeline-day {{ 'today' if date == today else '' }}">
+        <div class="timeline-date">
+            {% if date == today %}
+                <strong>Today</strong> — {{ date.strftime('%b %d, %Y') }}
+            {% else %}
+                {{ date.strftime('%a, %b %d') }}
+            {% endif %}
+            {% if date < today %}
+                <span class="timeline-label past">Past</span>
+            {% elif date == today %}
+                <span class="timeline-label today-label">Today</span>
+            {% else %}
+                <span class="timeline-label future">Upcoming</span>
+            {% endif %}
+        </div>
+        <div class="timeline-events">
+            {% for event in events %}
+            <div class="timeline-event {{ event.type }}">
+                <span class="timeline-icon">
+                    {% if event.type == 'watered' %}💧
+                    {% elif event.type == 'overdue' %}🚨
+                    {% else %}📋
+                    {% endif %}
+                </span>
+                <div class="timeline-event-details">
+                    <span class="timeline-plant-name">{{ event.plant_name }}</span>
+                    <span class="timeline-species">{{ event.species_name }}</span>
+                </div>
+                <span class="timeline-type-badge {{ event.type }}">
+                    {% if event.type == 'watered' %}Watered
+                    {% elif event.type == 'overdue' %}Needs water!
+                    {% else %}Scheduled
+                    {% endif %}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No plants yet! <a href="{{ url_for('main.add_plant') }}">Add your first plant</a> to see your watering timeline.</p>
+{% endif %}
+{% endblock %}

@@ -320,6 +320,123 @@ textarea {
     color: #1e40af;
 }
 
+/* Timeline / Dashboard */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.timeline-day {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-day.today {
+    border-left: 4px solid #2d6a4f;
+}
+
+.timeline-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.timeline-label {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.timeline-label.past {
+    background: #e5e7eb;
+    color: #6b7280;
+}
+
+.timeline-label.today-label {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.timeline-label.future {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.timeline-events {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.timeline-event {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    background: #f9fafb;
+}
+
+.timeline-event.overdue {
+    background: #fef2f2;
+}
+
+.timeline-event.watered {
+    background: #f0f9ff;
+}
+
+.timeline-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.timeline-event-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-plant-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.timeline-species {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.timeline-type-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.timeline-type-badge.watered {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.timeline-type-badge.overdue {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.timeline-type-badge.upcoming {
+    background: #d1fae5;
+    color: #065f46;
+}
+
 /* Desktop overrides */
 @media (min-width: 768px) {
     nav {

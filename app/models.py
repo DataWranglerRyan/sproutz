@@ -21,6 +21,13 @@ class SpeciesIssue(db.Model):
     issue = db.Column(db.String(200), nullable=False)
     solution = db.Column(db.Text, nullable=False)
 
+
+class WateringEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"), nullable=False)
+    watered_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    plant = db.relationship("Plant", backref="watering_events")
+
     def __repr__(self):
         return f"<Species {self.name} (every {self.watering_interval_days} days)>"
 

@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
+from datetime import datetime, timedelta
 
 from app import db
-from app.models import Plant, Species
+from app.models import Plant, Species, WateringEvent
 
 main = Blueprint("main", __name__)
 
@@ -31,6 +32,8 @@ def add_plant():
 def water_plant(plant_id):
     plant = Plant.query.get_or_404(plant_id)
     plant.water()
+    event = WateringEvent(plant_id=plant.id, watered_at=datetime.utcnow())
+    db.session.add(event)
     db.session.commit()
     flash(f"Watered {plant.name}!", "success")
     return redirect(url_for("main.index"))
@@ -88,3 +91,45 @@ def manage_species():
 def species_detail(species_id):
     species = Species.query.get_or_404(species_id)
     return render_template("species_detail.html", species=species)
+
+
+@main.route("/dashboard")
+def dashboard():
+    plants = Plant.query.all()
+    today = datetime.utcnow().date()
+
+    # Build timeline: past watering events + future scheduled waterings
+    timeline_events = []
+
+    for plant in plants:
+        # Past watering events
+        for event in plant.watering_events:
+            timeline_events.append({
+                "date": event.watered_at.date(),
+                "plant_name": plant.name,
+                "species_name": plant.species.name,
+                "type": "watered",
+            })
+
+        # Next upcoming watering
+        next_date = plant.next_watering.date()
+        timeline_events.append({
+            "date": next_date,
+            "plant_name": plant.name,
+            "species_name": plant.species.name,
+            "type": "overdue" if next_date <= today else "upcoming",
+        })
+
+    # Sort by date
+    timeline_events.sort(key=lambda e: e["date"])
+
+    # Group events by date for the calendar view
+    from collections import OrderedDict
+    days = OrderedDict()
+    for event in timeline_events:
+        date_key = event["date"]
+        if date_key not in days:
+            days[date_key] = []
+        days[date_key].append(event)
+
+    return render_template("dashboard.html", days=days, today=today)
