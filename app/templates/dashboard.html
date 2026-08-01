@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>📅 Dashboard</h1>
+<h1><i class="bi bi-calendar3"></i> Dashboard</h1>
 
 <!-- Monthly Calendar -->
 <div class="calendar-container">
@@ -51,7 +51,7 @@
 </div>
 
 <!-- Timeline -->
-<h2>🗓️ Timeline</h2>
+<h2><i class="bi bi-clock-history"></i> Timeline</h2>
 {% if days %}
 <div class="timeline">
     {% for date, events in days.items() %}
@@ -74,9 +74,9 @@
             {% for event in events %}
             <div class="timeline-event {{ event.type }}">
                 <span class="timeline-icon">
-                    {% if event.type == 'watered' %}💧
-                    {% elif event.type == 'overdue' %}🚨
-                    {% else %}📋
+                    {% if event.type == 'watered' %}<i class="bi bi-droplet-fill"></i>
+                    {% elif event.type == 'overdue' %}<i class="bi bi-exclamation-triangle-fill"></i>
+                    {% else %}<i class="bi bi-calendar-check"></i>
                     {% endif %}
                 </span>
                 <div class="timeline-event-details">
@@ -119,7 +119,7 @@ function openWateringModal(cell) {
     const title = document.getElementById('modal-title');
     const body = document.getElementById('modal-body');
 
-    title.textContent = '💧 ' + date;
+    title.textContent = date;
 
     let html = '<ul class="modal-plant-list">';
     plants.forEach(function(plant) {
@@ -129,7 +129,7 @@ function openWateringModal(cell) {
         html += '<span class="modal-plant-species">' + plant.species + '</span>';
         html += '</div>';
         html += '<form method="POST" action="/plants/' + plant.id + '/water">';
-        html += '<button type="submit" class="btn water modal-water-btn">💧 Water</button>';
+        html += '<button type="submit" class="btn water modal-water-btn"><i class="bi bi-droplet-fill"></i> Water</button>';
         html += '</form>';
         html += '</li>';
     });

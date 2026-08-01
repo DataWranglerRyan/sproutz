@@ -2,33 +2,33 @@
 
 {% block content %}
 <h1>{{ species.name }}</h1>
-<p class="subtitle">Water every {{ species.watering_interval_days }} days</p>
+<p class="subtitle"><i class="bi bi-droplet"></i> Water every {{ species.watering_interval_days }} days</p>
 
 <div class="care-grid">
     {% if species.sunlight %}
     <div class="care-card">
-        <h3>☀️ Sunlight</h3>
+        <h3><i class="bi bi-sun"></i> Sunlight</h3>
         <p>{{ species.sunlight }}</p>
     </div>
     {% endif %}
 
     {% if species.soil_type %}
     <div class="care-card">
-        <h3>🪴 Soil</h3>
+        <h3><i class="bi bi-moisture"></i> Soil</h3>
         <p>{{ species.soil_type }}</p>
     </div>
     {% endif %}
 
     {% if species.care_tips %}
     <div class="care-card">
-        <h3>💡 Care Tips</h3>
+        <h3><i class="bi bi-lightbulb"></i> Care Tips</h3>
         <p>{{ species.care_tips }}</p>
     </div>
     {% endif %}
 </div>
 
 {% if species.fertilizer_type or species.fertilizer_schedule %}
-<h2>🧪 Fertilizer Schedule</h2>
+<h2><i class="bi bi-cup-straw"></i> Fertilizer Schedule</h2>
 <div class="care-grid">
     {% if species.fertilizer_type %}
     <div class="care-card">
@@ -54,7 +54,7 @@
 {% endif %}
 
 {% if species.issues %}
-<h2>⚠️ Common Issues &amp; Solutions</h2>
+<h2><i class="bi bi-exclamation-triangle"></i> Common Issues &amp; Solutions</h2>
 <table class="issues-table">
     <thead>
         <tr>
@@ -73,5 +73,5 @@
 </table>
 {% endif %}
 
-<a href="{{ url_for('main.manage_species') }}" class="btn">← Back to Species</a>
+<a href="{{ url_for('main.manage_species') }}" class="btn"><i class="bi bi-arrow-left"></i> Back to Species</a>
 {% endblock %}

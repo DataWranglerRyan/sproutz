@@ -6,15 +6,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sproutz">
-    <title>🌱 Sproutz</title>
+    <title>Sproutz</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('main.index') }}">My Plants</a>
-        <a href="{{ url_for('main.add_plant') }}">Add Plant</a>
-        <a href="{{ url_for('main.manage_species') }}">Species</a>
+        <a href="{{ url_for('main.dashboard') }}"><i class="bi bi-calendar3"></i> Dashboard</a>
+        <a href="{{ url_for('main.index') }}"><i class="bi bi-flower2"></i> My Plants</a>
+        <a href="{{ url_for('main.add_plant') }}"><i class="bi bi-plus-circle"></i> Add</a>
+        <a href="{{ url_for('main.manage_species') }}"><i class="bi bi-tree"></i> Species</a>
     </nav>
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}

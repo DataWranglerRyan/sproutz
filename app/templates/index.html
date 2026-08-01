@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>🌱 My Plants</h1>
+<h1><i class="bi bi-flower2"></i> My Plants</h1>
 
 {% if plants %}
 <div class="plant-list">
@@ -24,10 +24,10 @@
         </div>
         <div class="plant-card-actions">
             <form method="POST" action="{{ url_for('main.water_plant', plant_id=plant.id) }}">
-                <button type="submit" class="btn water">💧 Water</button>
+                <button type="submit" class="btn water"><i class="bi bi-droplet-fill"></i> Water</button>
             </form>
             <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}">
-                <button type="submit" class="btn delete">🗑️</button>
+                <button type="submit" class="btn delete"><i class="bi bi-trash"></i></button>
             </form>
         </div>
     </div>

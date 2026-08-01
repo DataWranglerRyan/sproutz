@@ -6,14 +6,14 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #f0f7f0;
-    color: #333;
+    background: #f5f0eb;
+    color: #3d3229;
     line-height: 1.6;
     -webkit-text-size-adjust: 100%;
 }
 
 nav {
-    background: #2d6a4f;
+    background: #4a6741;
     padding: 0.75rem 1rem;
     display: flex;
     gap: 1.25rem;
@@ -23,14 +23,14 @@ nav {
 }
 
 nav a {
-    color: white;
+    color: #f0ebe4;
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #c8dfc0;
 }
 
 .container {
@@ -41,13 +41,13 @@ nav a:hover {
 
 h1 {
     margin-bottom: 1rem;
-    color: #1b4332;
+    color: #2e4a26;
     font-size: 1.5rem;
 }
 
 h2 {
     margin: 1.5rem 0 1rem;
-    color: #2d6a4f;
+    color: #4a6741;
     font-size: 1.25rem;
 }
 
@@ -79,7 +79,7 @@ h2 {
 .plant-card-name {
     font-weight: 600;
     font-size: 1.1rem;
-    color: #1b4332;
+    color: #2e4a26;
 }
 
 .plant-card-species {
@@ -127,8 +127,8 @@ th, td {
 }
 
 th {
-    background: #2d6a4f;
-    color: white;
+    background: #4a6741;
+    color: #f0ebe4;
     font-size: 0.85rem;
 }
 
@@ -150,8 +150,8 @@ tr.overdue {
 }
 
 .badge.ok {
-    background: #d1fae5;
-    color: #065f46;
+    background: #dce8d8;
+    color: #2e4a26;
 }
 
 form {
@@ -206,7 +206,7 @@ textarea {
 
 .care-card h3 {
     margin-bottom: 0.5rem;
-    color: #2d6a4f;
+    color: #4a6741;
     font-size: 1rem;
 }
 
@@ -222,7 +222,7 @@ textarea {
 
 .issue-cell {
     font-weight: 600;
-    color: #b91c1c;
+    color: #8b5e3c;
 }
 
 .issues-fieldset {
@@ -258,20 +258,20 @@ textarea {
 }
 
 .add-issue-btn {
-    background: #059669;
+    background: #5b8a72;
     margin-top: 0.5rem;
 }
 
 .add-issue-btn:hover {
-    background: #047857;
+    background: #4a7360;
 }
 
 .btn {
     display: inline-block;
     margin-top: 1rem;
     padding: 0.75rem 1.25rem;
-    background: #2d6a4f;
-    color: white;
+    background: #4a6741;
+    color: #f0ebe4;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -281,7 +281,7 @@ textarea {
 }
 
 .btn:hover {
-    background: #1b4332;
+    background: #3a5333;
 }
 
 .btn:active {
@@ -289,19 +289,19 @@ textarea {
 }
 
 .btn.water {
-    background: #0ea5e9;
+    background: #5b8a72;
 }
 
 .btn.water:hover {
-    background: #0284c7;
+    background: #4a7360;
 }
 
 .btn.delete {
-    background: #ef4444;
+    background: #8b5e3c;
 }
 
 .btn.delete:hover {
-    background: #dc2626;
+    background: #6b4730;
 }
 
 .flash {
@@ -311,13 +311,13 @@ textarea {
 }
 
 .flash.success {
-    background: #d1fae5;
-    color: #065f46;
+    background: #dce8d8;
+    color: #2e4a26;
 }
 
 .flash.info {
-    background: #dbeafe;
-    color: #1e40af;
+    background: #e8dfd6;
+    color: #5c3d1e;
 }
 
 /* Timeline / Dashboard */
@@ -346,8 +346,8 @@ textarea {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #f3f4f6;
-    color: #1b4332;
+    background: #e8dfd6;
+    color: #3d3229;
     text-decoration: none;
     font-size: 1.25rem;
     font-weight: 700;
@@ -355,7 +355,7 @@ textarea {
 }
 
 .calendar-nav-btn:active {
-    background: #d1fae5;
+    background: #dce8d8;
 }
 
 .calendar-today-link {
@@ -365,7 +365,7 @@ textarea {
 
 .calendar-today-link a {
     font-size: 0.75rem;
-    color: #2d6a4f;
+    color: #4a6741;
     text-decoration: underline;
 }
 
@@ -373,7 +373,7 @@ textarea {
     text-align: center;
     margin: 0;
     font-size: 1rem;
-    color: #1b4332;
+    color: #2e4a26;
 }
 
 .calendar-grid {
@@ -407,8 +407,8 @@ textarea {
 }
 
 .calendar-cell.today {
-    background: #2d6a4f;
-    color: white;
+    background: #4a6741;
+    color: #f0ebe4;
 }
 
 .calendar-cell.today .calendar-day-num {
@@ -416,7 +416,7 @@ textarea {
 }
 
 .calendar-cell.has-watering:not(.today) {
-    background: #f0fdf4;
+    background: #e8f0e4;
 }
 
 .calendar-cell.is-overdue:not(.today) {
@@ -435,18 +435,18 @@ textarea {
 }
 
 .calendar-dot.scheduled {
-    background: #2d6a4f;
+    background: #4a6741;
 }
 
 .calendar-dot.overdue {
-    background: #dc2626;
+    background: #8b5e3c;
 }
 
 .calendar-dot.today-dot {
-    background: #2d6a4f;
+    background: #4a6741;
     width: 8px;
     height: 8px;
-    border: 2px solid #2d6a4f;
+    border: 2px solid #4a6741;
     background: white;
 }
 
@@ -505,13 +505,13 @@ textarea {
 }
 
 .timeline-label.today-label {
-    background: #d1fae5;
-    color: #065f46;
+    background: #dce8d8;
+    color: #2e4a26;
 }
 
 .timeline-label.future {
-    background: #dbeafe;
-    color: #1e40af;
+    background: #e8dfd6;
+    color: #5c3d1e;
 }
 
 .timeline-events {
@@ -534,7 +534,7 @@ textarea {
 }
 
 .timeline-event.watered {
-    background: #f0f9ff;
+    background: #e8f0e4;
 }
 
 .timeline-icon {
@@ -567,18 +567,18 @@ textarea {
 }
 
 .timeline-type-badge.watered {
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #dce8d8;
+    color: #2e4a26;
 }
 
 .timeline-type-badge.overdue {
-    background: #fee2e2;
-    color: #dc2626;
+    background: #f0ddd0;
+    color: #6b4730;
 }
 
 .timeline-type-badge.upcoming {
-    background: #d1fae5;
-    color: #065f46;
+    background: #e8dfd6;
+    color: #5c3d1e;
 }
 
 /* Watering Modal / Bottom Sheet */
@@ -625,7 +625,7 @@ textarea {
 .modal-header h3 {
     margin: 0;
     font-size: 1.1rem;
-    color: #1b4332;
+    color: #2e4a26;
 }
 
 .modal-close {

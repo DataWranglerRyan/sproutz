@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Species</h1>
 
-<button class="btn" id="open-add-species" onclick="openSpeciesModal()">+ Add Species</button>
+<button class="btn" id="open-add-species" onclick="openSpeciesModal()"><i class="bi bi-plus-circle"></i> Add Species</button>
 
 {% if species %}
 <table style="margin-top: 1rem;">
@@ -21,7 +21,7 @@
             <td>{{ s.name }}</td>
             <td>{{ s.watering_interval_days }} days</td>
             <td>{{ s.sunlight or '—' }}</td>
-            <td><a href="{{ url_for('main.species_detail', species_id=s.id) }}" title="View Care Info">ℹ️</a></td>
+            <td><a href="{{ url_for('main.species_detail', species_id=s.id) }}" title="View Care Info"><i class="bi bi-info-circle"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>
