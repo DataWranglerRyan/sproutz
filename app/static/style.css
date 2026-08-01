@@ -1,3 +1,27 @@
+/* ═══════════════════════════════════════════
+   Sproutz — Minimal Zen Garden Theme
+   ═══════════════════════════════════════════ */
+
+:root {
+    --stone: #4a4a42;
+    --stone-light: #7a7a6e;
+    --moss: #5c7a5e;
+    --moss-dark: #3d5a3f;
+    --moss-muted: #8fa88f;
+    --sand: #faf8f5;
+    --sand-warm: #f2ede7;
+    --pebble: #e8e4de;
+    --bark: #8c6d4f;
+    --bark-light: #c4a882;
+    --water: #7ca5a0;
+    --water-light: #d4e5e3;
+    --alert: #c07a5a;
+    --alert-light: #f3e4dc;
+    --shadow: rgba(74, 74, 66, 0.06);
+    --shadow-hover: rgba(74, 74, 66, 0.12);
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,68 +29,85 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #f5f0eb;
-    color: #3d3229;
-    line-height: 1.6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--sand);
+    color: var(--stone);
+    line-height: 1.7;
     -webkit-text-size-adjust: 100%;
+    letter-spacing: 0.01em;
 }
 
+/* ─── Navigation ─── */
 nav {
-    background: #4a6741;
-    padding: 0.75rem 1rem;
+    background: var(--sand);
+    padding: 1rem 1rem;
     display: flex;
-    gap: 1.25rem;
+    gap: 1.5rem;
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: 1px solid var(--pebble);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 nav a {
-    color: #f0ebe4;
+    color: var(--stone-light);
     text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
+    font-weight: 400;
+    font-size: 0.9rem;
+    transition: color var(--transition);
+    letter-spacing: 0.02em;
 }
 
 nav a:hover {
-    color: #c8dfc0;
+    color: var(--moss);
 }
 
+/* ─── Layout ─── */
 .container {
-    max-width: 900px;
-    margin: 1rem auto;
-    padding: 0 0.75rem;
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 0 1.25rem;
 }
 
 h1 {
-    margin-bottom: 1rem;
-    color: #2e4a26;
-    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--stone);
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
 }
 
 h2 {
-    margin: 1.5rem 0 1rem;
-    color: #4a6741;
-    font-size: 1.25rem;
+    margin: 2rem 0 1rem;
+    color: var(--stone);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
 }
 
-/* Card-based layout for plants on mobile instead of table */
+/* ─── Plant Cards ─── */
 .plant-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .plant-card {
     background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px var(--shadow);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.plant-card:active {
+    transform: scale(0.99);
 }
 
 .plant-card.overdue {
-    border-left: 4px solid #dc2626;
+    border-left: 3px solid var(--alert);
 }
 
 .plant-card-header {
@@ -77,14 +118,15 @@ h2 {
 }
 
 .plant-card-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #2e4a26;
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--stone);
 }
 
 .plant-card-species {
-    color: #555;
-    font-size: 0.85rem;
+    color: var(--stone-light);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
 }
 
 .plant-card-details {
@@ -92,14 +134,14 @@ h2 {
     justify-content: space-between;
     align-items: center;
     margin-top: 0.5rem;
-    font-size: 0.85rem;
-    color: #555;
+    font-size: 0.8rem;
+    color: var(--stone-light);
 }
 
 .plant-card-actions {
     display: flex;
     gap: 0.5rem;
-    margin-top: 0.75rem;
+    margin-top: 1rem;
 }
 
 .plant-card-actions .btn {
@@ -107,76 +149,94 @@ h2 {
     flex: 1;
     text-align: center;
     padding: 0.6rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
-/* Table styles for desktop */
+/* ─── Tables ─── */
 table {
     width: 100%;
     border-collapse: collapse;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px var(--shadow);
 }
 
 th, td {
-    padding: 0.75rem 0.75rem;
+    padding: 0.75rem 1rem;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--pebble);
 }
 
 th {
-    background: #4a6741;
-    color: #f0ebe4;
-    font-size: 0.85rem;
+    background: var(--sand-warm);
+    color: var(--stone-light);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
 }
 
 tr.overdue {
-    background: #fff3f3;
+    background: var(--alert-light);
 }
 
+/* ─── Badges ─── */
 .badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 500;
     display: inline-block;
+    letter-spacing: 0.02em;
 }
 
 .badge.overdue {
-    background: #fee2e2;
-    color: #dc2626;
+    background: var(--alert-light);
+    color: var(--alert);
 }
 
 .badge.ok {
-    background: #dce8d8;
-    color: #2e4a26;
+    background: var(--water-light);
+    color: var(--water);
 }
 
+/* ─── Forms ─── */
 form {
     margin-bottom: 1rem;
 }
 
 label {
     display: block;
-    margin: 0.75rem 0 0.25rem;
-    font-weight: 500;
+    margin: 1rem 0 0.25rem;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--stone-light);
+    letter-spacing: 0.02em;
 }
 
 input, select, textarea {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px; /* prevents iOS zoom on focus */
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--pebble);
+    border-radius: 10px;
+    font-size: 16px;
     font-family: inherit;
     -webkit-appearance: none;
     appearance: none;
+    background: white;
+    color: var(--stone);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--moss-muted);
+    box-shadow: 0 0 0 3px rgba(92, 122, 94, 0.1);
 }
 
 select {
-    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a6e' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
     padding-right: 2rem;
 }
 
@@ -185,11 +245,13 @@ textarea {
 }
 
 .subtitle {
-    color: #555;
-    margin-bottom: 1rem;
-    font-size: 1rem;
+    color: var(--stone-light);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 300;
 }
 
+/* ─── Care Cards ─── */
 .care-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -199,17 +261,26 @@ textarea {
 
 .care-card {
     background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px var(--shadow);
+    transition: box-shadow var(--transition);
 }
 
 .care-card h3 {
     margin-bottom: 0.5rem;
-    color: #4a6741;
-    font-size: 1rem;
+    color: var(--moss);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
 }
 
+.care-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* ─── Issues ─── */
 .issues-table {
     margin-top: 1rem;
     margin-bottom: 1.5rem;
@@ -217,24 +288,27 @@ textarea {
 
 .issues-table td {
     vertical-align: top;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
 .issue-cell {
-    font-weight: 600;
-    color: #8b5e3c;
+    font-weight: 500;
+    color: var(--bark);
 }
 
 .issues-fieldset {
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 1px solid var(--pebble);
+    border-radius: 12px;
     padding: 1rem;
     margin-top: 1rem;
 }
 
 .issues-fieldset legend {
-    font-weight: 600;
+    font-weight: 400;
     padding: 0 0.5rem;
+    font-size: 0.85rem;
+    color: var(--stone-light);
 }
 
 .issue-row {
@@ -243,7 +317,7 @@ textarea {
     gap: 0.5rem;
     margin-bottom: 0.75rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--pebble);
 }
 
 .issue-row input {
@@ -258,75 +332,93 @@ textarea {
 }
 
 .add-issue-btn {
-    background: #5b8a72;
+    background: transparent;
+    color: var(--moss);
+    border: 1px dashed var(--moss-muted);
     margin-top: 0.5rem;
 }
 
 .add-issue-btn:hover {
-    background: #4a7360;
+    background: rgba(92, 122, 94, 0.05);
 }
 
+/* ─── Buttons ─── */
 .btn {
     display: inline-block;
     margin-top: 1rem;
-    padding: 0.75rem 1.25rem;
-    background: #4a6741;
-    color: #f0ebe4;
+    padding: 0.7rem 1.25rem;
+    background: var(--moss);
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    transition: background var(--transition), transform 0.1s ease;
 }
 
 .btn:hover {
-    background: #3a5333;
+    background: var(--moss-dark);
 }
 
 .btn:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
 }
 
 .btn.water {
-    background: #5b8a72;
+    background: var(--water);
 }
 
 .btn.water:hover {
-    background: #4a7360;
+    background: #5d8e88;
 }
 
 .btn.delete {
-    background: #8b5e3c;
+    background: transparent;
+    color: var(--stone-light);
+    border: 1px solid var(--pebble);
 }
 
 .btn.delete:hover {
-    background: #6b4730;
+    background: var(--alert-light);
+    color: var(--alert);
+    border-color: var(--alert);
 }
 
+/* ─── Flash Messages ─── */
 .flash {
     padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    animation: fadeIn 0.3s ease;
 }
 
 .flash.success {
-    background: #dce8d8;
-    color: #2e4a26;
+    background: var(--water-light);
+    color: #3d6b66;
 }
 
 .flash.info {
-    background: #e8dfd6;
-    color: #5c3d1e;
+    background: var(--sand-warm);
+    color: var(--stone-light);
 }
 
-/* Timeline / Dashboard */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Calendar ─── */
 .calendar-container {
     background: white;
-    border-radius: 8px;
-    padding: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px var(--shadow);
+    margin-bottom: 2rem;
     max-width: 320px;
     margin-left: auto;
     margin-right: auto;
@@ -336,7 +428,7 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .calendar-nav-btn {
@@ -346,16 +438,21 @@ textarea {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #e8dfd6;
-    color: #3d3229;
+    background: transparent;
+    color: var(--stone-light);
     text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 400;
     -webkit-tap-highlight-color: transparent;
+    transition: background var(--transition);
+}
+
+.calendar-nav-btn:hover {
+    background: var(--sand-warm);
 }
 
 .calendar-nav-btn:active {
-    background: #dce8d8;
+    background: var(--pebble);
 }
 
 .calendar-today-link {
@@ -364,31 +461,35 @@ textarea {
 }
 
 .calendar-today-link a {
-    font-size: 0.75rem;
-    color: #4a6741;
-    text-decoration: underline;
+    font-size: 0.7rem;
+    color: var(--moss-muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .calendar-month {
     text-align: center;
     margin: 0;
-    font-size: 1rem;
-    color: #2e4a26;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--stone);
+    letter-spacing: 0.03em;
 }
 
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 3px;
 }
 
 .calendar-header {
     text-align: center;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #6b7280;
-    padding: 0.25rem 0;
-    text-transform: uppercase;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--stone-light);
+    padding: 0.4rem 0;
+    letter-spacing: 0.05em;
 }
 
 .calendar-cell {
@@ -397,9 +498,10 @@ textarea {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
+    border-radius: 50%;
     position: relative;
     gap: 1px;
+    transition: background var(--transition), transform 0.1s ease;
 }
 
 .calendar-cell.empty {
@@ -407,46 +509,46 @@ textarea {
 }
 
 .calendar-cell.today {
-    background: #4a6741;
-    color: #f0ebe4;
+    background: var(--moss);
+    color: white;
 }
 
 .calendar-cell.today .calendar-day-num {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .calendar-cell.has-watering:not(.today) {
-    background: #e8f0e4;
+    background: var(--water-light);
 }
 
 .calendar-cell.is-overdue:not(.today) {
-    background: #fef2f2;
+    background: var(--alert-light);
 }
 
 .calendar-day-num {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 300;
 }
 
 .calendar-dot {
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     display: inline-block;
 }
 
 .calendar-dot.scheduled {
-    background: #4a6741;
+    background: var(--moss);
 }
 
 .calendar-dot.overdue {
-    background: #8b5e3c;
+    background: var(--alert);
 }
 
 .calendar-dot.today-dot {
-    background: #4a6741;
-    width: 8px;
-    height: 8px;
-    border: 2px solid #4a6741;
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid var(--moss);
     background: white;
 }
 
@@ -455,31 +557,33 @@ textarea {
     justify-content: center;
     gap: 1rem;
     margin-top: 0.75rem;
-    font-size: 0.75rem;
-    color: #6b7280;
+    font-size: 0.65rem;
+    color: var(--stone-light);
+    letter-spacing: 0.02em;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.3rem;
 }
 
+/* ─── Timeline ─── */
 .timeline {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .timeline-day {
     background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 1px 3px var(--shadow);
 }
 
 .timeline-day.today {
-    border-left: 4px solid #2d6a4f;
+    border-left: 3px solid var(--moss);
 }
 
 .timeline-date {
@@ -487,31 +591,32 @@ textarea {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
-    font-size: 0.9rem;
-    color: #555;
+    font-size: 0.85rem;
+    color: var(--stone-light);
 }
 
 .timeline-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     padding: 0.15rem 0.4rem;
-    border-radius: 4px;
-    font-weight: 600;
+    border-radius: 20px;
+    font-weight: 500;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .timeline-label.past {
-    background: #e5e7eb;
-    color: #6b7280;
+    background: var(--pebble);
+    color: var(--stone-light);
 }
 
 .timeline-label.today-label {
-    background: #dce8d8;
-    color: #2e4a26;
+    background: var(--water-light);
+    color: var(--water);
 }
 
 .timeline-label.future {
-    background: #e8dfd6;
-    color: #5c3d1e;
+    background: var(--sand-warm);
+    color: var(--bark);
 }
 
 .timeline-events {
@@ -525,21 +630,31 @@ textarea {
     align-items: center;
     gap: 0.75rem;
     padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    background: #f9fafb;
+    border-radius: 8px;
+    background: var(--sand);
+    transition: background var(--transition);
 }
 
 .timeline-event.overdue {
-    background: #fef2f2;
+    background: var(--alert-light);
 }
 
 .timeline-event.watered {
-    background: #e8f0e4;
+    background: var(--water-light);
 }
 
 .timeline-icon {
-    font-size: 1.2rem;
+    font-size: 1rem;
     flex-shrink: 0;
+    color: var(--moss-muted);
+}
+
+.timeline-event.overdue .timeline-icon {
+    color: var(--alert);
+}
+
+.timeline-event.watered .timeline-icon {
+    color: var(--water);
 }
 
 .timeline-event-details {
@@ -549,62 +664,66 @@ textarea {
 }
 
 .timeline-plant-name {
-    font-weight: 600;
-    font-size: 0.95rem;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .timeline-species {
-    font-size: 0.8rem;
-    color: #6b7280;
+    font-size: 0.75rem;
+    color: var(--stone-light);
 }
 
 .timeline-type-badge {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-weight: 600;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    font-weight: 500;
     white-space: nowrap;
+    letter-spacing: 0.03em;
 }
 
 .timeline-type-badge.watered {
-    background: #dce8d8;
-    color: #2e4a26;
+    background: var(--water-light);
+    color: #3d6b66;
 }
 
 .timeline-type-badge.overdue {
-    background: #f0ddd0;
-    color: #6b4730;
+    background: var(--alert-light);
+    color: var(--alert);
 }
 
 .timeline-type-badge.upcoming {
-    background: #e8dfd6;
-    color: #5c3d1e;
+    background: var(--sand-warm);
+    color: var(--bark);
 }
 
-/* Watering Modal / Bottom Sheet */
+/* ─── Modal / Bottom Sheet ─── */
 .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(74, 74, 66, 0.3);
     z-index: 1000;
     align-items: flex-end;
     justify-content: center;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .modal-overlay.active {
     display: flex;
+    animation: fadeIn 0.2s ease;
 }
 
 .modal-sheet {
     background: white;
-    border-radius: 16px 16px 0 0;
+    border-radius: 20px 20px 0 0;
     width: 100%;
     max-width: 400px;
     max-height: 70vh;
     overflow-y: auto;
-    padding: 1.25rem;
-    animation: slideUp 0.25s ease-out;
+    padding: 1.5rem;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-overflow-scrolling: touch;
 }
 
@@ -619,23 +738,29 @@ textarea {
     align-items: center;
     margin-bottom: 1rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--pebble);
 }
 
 .modal-header h3 {
     margin: 0;
-    font-size: 1.1rem;
-    color: #2e4a26;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--stone);
 }
 
 .modal-close {
     background: none;
     border: none;
-    font-size: 1.5rem;
-    color: #6b7280;
+    font-size: 1.3rem;
+    color: var(--stone-light);
     padding: 0.25rem 0.5rem;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    transition: color var(--transition);
+}
+
+.modal-close:hover {
+    color: var(--stone);
 }
 
 .modal-plant-list {
@@ -649,7 +774,7 @@ textarea {
     align-items: center;
     justify-content: space-between;
     padding: 0.75rem 0;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--pebble);
 }
 
 .modal-plant-item:last-child {
@@ -657,9 +782,10 @@ textarea {
 }
 
 .modal-plant-item.overdue {
-    background: #fef2f2;
-    margin: 0 -1.25rem;
-    padding: 0.75rem 1.25rem;
+    background: var(--alert-light);
+    margin: 0 -1.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
 }
 
 .modal-plant-info {
@@ -668,25 +794,25 @@ textarea {
 }
 
 .modal-plant-name {
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 500;
+    font-size: 0.95rem;
 }
 
 .modal-plant-species {
-    font-size: 0.8rem;
-    color: #6b7280;
+    font-size: 0.75rem;
+    color: var(--stone-light);
 }
 
 .modal-water-btn {
     margin-top: 0;
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
     white-space: nowrap;
 }
 
 .species-modal-sheet {
     max-height: 90vh;
-    border-radius: 16px 16px 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .species-modal-sheet .modal-body {
@@ -695,29 +821,31 @@ textarea {
     -webkit-overflow-scrolling: touch;
 }
 
-/* Tappable calendar cells */
+/* ─── Tappable Calendar Cells ─── */
 .calendar-cell[role="button"] {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
 
 .calendar-cell[role="button"]:active {
-    transform: scale(0.9);
+    transform: scale(0.85);
 }
 
-/* Desktop overrides */
+/* ─── Desktop Overrides ─── */
 @media (min-width: 768px) {
     nav {
         padding: 1rem 2rem;
+        justify-content: center;
+        gap: 2.5rem;
     }
 
     .container {
-        margin: 2rem auto;
-        padding: 0 1rem;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
     }
 
     h1 {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
     }
 
     .care-grid {
@@ -744,7 +872,15 @@ textarea {
     }
 
     .modal-sheet {
-        border-radius: 12px;
+        border-radius: 16px;
         max-height: 50vh;
+    }
+
+    .plant-card:hover {
+        box-shadow: 0 4px 12px var(--shadow-hover);
+    }
+
+    .care-card:hover {
+        box-shadow: 0 4px 12px var(--shadow-hover);
     }
 }
