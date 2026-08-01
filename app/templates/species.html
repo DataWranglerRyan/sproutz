@@ -1,45 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Manage Species</h1>
+<h1>Species</h1>
 
-<form method="POST">
-    <label for="name">Species Name:</label>
-    <input type="text" id="name" name="name" required placeholder="e.g. Pothos">
-
-    <label for="watering_interval_days">Watering Interval (days):</label>
-    <input type="number" id="watering_interval_days" name="watering_interval_days" required min="1" placeholder="7">
-
-    <label for="sunlight">Sunlight Requirements:</label>
-    <input type="text" id="sunlight" name="sunlight" placeholder="e.g. Bright indirect light">
-
-    <label for="soil_type">Soil Type:</label>
-    <input type="text" id="soil_type" name="soil_type" placeholder="e.g. Well-draining potting mix">
-
-    <label for="common_issues">Common Issues (general notes):</label>
-    <textarea id="common_issues" name="common_issues" rows="2" placeholder="e.g. Yellow leaves from overwatering"></textarea>
-
-    <label for="care_tips">Care Tips:</label>
-    <textarea id="care_tips" name="care_tips" rows="2" placeholder="e.g. Let soil dry between waterings"></textarea>
-
-    <fieldset class="issues-fieldset">
-        <legend>Common Issues &amp; Solutions</legend>
-        <div id="issues-container">
-            <div class="issue-row">
-                <input type="text" name="issue[]" placeholder="Issue (e.g. Yellow leaves)">
-                <input type="text" name="solution[]" placeholder="Solution (e.g. Reduce watering)">
-                <button type="button" class="btn delete remove-row">✕</button>
-            </div>
-        </div>
-        <button type="button" id="add-issue" class="btn add-issue-btn">+ Add Issue</button>
-    </fieldset>
-
-    <button type="submit" class="btn">Add Species</button>
-</form>
+<button class="btn" id="open-add-species" onclick="openSpeciesModal()">+ Add Species</button>
 
 {% if species %}
-<h2>Existing Species</h2>
-<table>
+<table style="margin-top: 1rem;">
     <thead>
         <tr>
             <th>Name</th>
@@ -59,9 +26,67 @@
         {% endfor %}
     </tbody>
 </table>
+{% else %}
+<p style="margin-top: 1rem;">No species yet. Add your first one!</p>
 {% endif %}
 
+<!-- Add Species Modal -->
+<div class="modal-overlay" id="species-modal" onclick="closeSpeciesModal(event)">
+    <div class="modal-sheet species-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Add Species</h3>
+            <button class="modal-close" onclick="closeSpeciesModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST">
+                <label for="name">Species Name:</label>
+                <input type="text" id="name" name="name" required placeholder="e.g. Pothos">
+
+                <label for="watering_interval_days">Watering Interval (days):</label>
+                <input type="number" id="watering_interval_days" name="watering_interval_days" required min="1" placeholder="7">
+
+                <label for="sunlight">Sunlight Requirements:</label>
+                <input type="text" id="sunlight" name="sunlight" placeholder="e.g. Bright indirect light">
+
+                <label for="soil_type">Soil Type:</label>
+                <input type="text" id="soil_type" name="soil_type" placeholder="e.g. Well-draining potting mix">
+
+                <label for="common_issues">Common Issues (general notes):</label>
+                <textarea id="common_issues" name="common_issues" rows="2" placeholder="e.g. Yellow leaves from overwatering"></textarea>
+
+                <label for="care_tips">Care Tips:</label>
+                <textarea id="care_tips" name="care_tips" rows="2" placeholder="e.g. Let soil dry between waterings"></textarea>
+
+                <fieldset class="issues-fieldset">
+                    <legend>Common Issues &amp; Solutions</legend>
+                    <div id="issues-container">
+                        <div class="issue-row">
+                            <input type="text" name="issue[]" placeholder="Issue (e.g. Yellow leaves)">
+                            <input type="text" name="solution[]" placeholder="Solution (e.g. Reduce watering)">
+                            <button type="button" class="btn delete remove-row">✕</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-issue" class="btn add-issue-btn">+ Add Issue</button>
+                </fieldset>
+
+                <button type="submit" class="btn" style="width: 100%;">Add Species</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+function openSpeciesModal() {
+    document.getElementById('species-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSpeciesModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('species-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 document.getElementById('add-issue').addEventListener('click', function() {
     const container = document.getElementById('issues-container');
     const row = document.createElement('div');

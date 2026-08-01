@@ -684,6 +684,17 @@ textarea {
     white-space: nowrap;
 }
 
+.species-modal-sheet {
+    max-height: 90vh;
+    border-radius: 16px 16px 0 0;
+}
+
+.species-modal-sheet .modal-body {
+    overflow-y: auto;
+    max-height: calc(90vh - 4rem);
+    -webkit-overflow-scrolling: touch;
+}
+
 /* Tappable calendar cells */
 .calendar-cell[role="button"] {
     cursor: pointer;
