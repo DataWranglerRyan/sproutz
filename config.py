@@ -5,13 +5,22 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
 
 
+def get_database_uri():
+    database_uri = os.environ.get(
+        "DATABASE_URL", f"sqlite:///{os.path.join(basedir, 'plants.db')}"
+    )
+    if database_uri.startswith("postgres://"):
+        return database_uri.replace("postgres://", "postgresql+psycopg://", 1)
+    if database_uri.startswith("postgresql://"):
+        return database_uri.replace("postgresql://", "postgresql+psycopg://", 1)
+    return database_uri
+
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
     AUTH_USERNAME = os.environ.get("AUTH_USERNAME")
     AUTH_PASSWORD_HASH = os.environ.get("AUTH_PASSWORD_HASH")
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", f"sqlite:///{os.path.join(basedir, 'plants.db')}"
-    )
+    SQLALCHEMY_DATABASE_URI = get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
