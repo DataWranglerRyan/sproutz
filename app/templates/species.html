@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Species</h1>
-
-<button class="btn" id="open-add-species" onclick="openSpeciesModal()"><i class="bi bi-plus-circle"></i> Add Species</button>
+<div class="page-header">
+    <h1>Species</h1>
+    <button class="subtle-add-btn" id="open-add-species" onclick="openSpeciesModal()">
+        <i class="bi bi-plus-lg"></i> Add species
+    </button>
+</div>
 
 {% if species %}
 <table style="margin-top: 1rem;">
@@ -12,16 +15,14 @@
             <th>Name</th>
             <th>Water Every</th>
             <th>Sunlight</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for s in species %}
-        <tr>
+        <tr class="species-row" role="link" tabindex="0" data-href="{{ url_for('main.species_detail', species_id=s.id) }}" onclick="openSpeciesDetail(this)" onkeydown="openSpeciesDetailOnKey(event, this)">
             <td>{{ s.name }}</td>
             <td>{{ s.watering_interval_days }} days</td>
             <td>{{ s.sunlight or '—' }}</td>
-            <td><a href="{{ url_for('main.species_detail', species_id=s.id) }}" title="View Care Info"><i class="bi bi-info-circle"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -85,6 +86,17 @@ function closeSpeciesModal(event) {
     if (event && event.target !== event.currentTarget) return;
     document.getElementById('species-modal').classList.remove('active');
     document.body.style.overflow = '';
+}
+
+function openSpeciesDetail(row) {
+    window.location.href = row.dataset.href;
+}
+
+function openSpeciesDetailOnKey(event, row) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openSpeciesDetail(row);
+    }
 }
 
 document.getElementById('add-issue').addEventListener('click', function() {

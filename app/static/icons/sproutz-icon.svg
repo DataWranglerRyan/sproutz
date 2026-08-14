@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title>Green cartoon sprout inside a circle</title>
+  <defs>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8fa88f"/>
+      <stop offset="1" stop-color="#5c7a5e"/>
+    </linearGradient>
+    <linearGradient id="soil" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c4a882"/>
+      <stop offset="1" stop-color="#8c6d4f"/>
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="226" fill="#faf8f5" stroke="#5c7a5e" stroke-width="22"/>
+  <path d="M256 366V236" fill="none" stroke="#3d5a3f" stroke-linecap="round" stroke-width="24"/>
+  <path d="M242 251C169 248 133 190 151 129c73 4 112 46 91 122Z" fill="url(#leaf)" stroke="#3d5a3f" stroke-linejoin="round" stroke-width="15"/>
+  <path d="M270 251c73-3 109-61 91-122-73 4-112 46-91 122Z" fill="url(#leaf)" stroke="#3d5a3f" stroke-linejoin="round" stroke-width="15"/>
+  <path d="M174 365c35-30 129-30 164 0l-15 52H189Z" fill="url(#soil)" stroke="#8c6d4f" stroke-linejoin="round" stroke-width="14"/>
+  <path d="M202 383c17 10 30 10 47 0m14 0c17 10 30 10 47 0" fill="none" stroke="#c4a882" stroke-linecap="round" stroke-width="10"/>
+  <circle cx="183" cy="181" r="12" fill="#d4e5e3" opacity=".8"/>
+</svg>

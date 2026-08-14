@@ -1,77 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ species.name }}</h1>
-<p class="subtitle"><i class="bi bi-droplet"></i> Water every {{ species.watering_interval_days }} days</p>
-
-<div class="care-grid">
-    {% if species.sunlight %}
-    <div class="care-card">
-        <h3><i class="bi bi-sun"></i> Sunlight</h3>
-        <p>{{ species.sunlight }}</p>
+<div class="species-detail-page">
+    <div class="species-detail-header">
+        <div class="species-title-row">
+            <a href="{{ url_for('main.manage_species') }}" class="species-back-btn" aria-label="Back to Species" title="Back to Species">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <h1>{{ species.name }}</h1>
+            {% if edit_mode %}
+            <span class="edit-mode-indicator"><i class="bi bi-pencil"></i> Edit mode · Select a section to edit</span>
+            <a href="{{ url_for('main.species_detail', species_id=species.id) }}" class="species-edit-btn" aria-label="Exit edit mode" title="Exit edit mode">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            {% else %}
+            <a href="{{ url_for('main.edit_species', species_id=species.id) }}" class="species-edit-btn" aria-label="Edit {{ species.name }}" title="Edit species">
+                <i class="bi bi-pencil"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% include "partials/_species_tabs.html" %}
     </div>
-    {% endif %}
 
-    {% if species.soil_type %}
-    <div class="care-card">
-        <h3><i class="bi bi-moisture"></i> Soil</h3>
-        <p>{{ species.soil_type }}</p>
+    {% include "partials/_species_care.html" %}
+    {% if edit_mode %}
+        {% include "partials/_species_edit_modals.html" %}
+    {% endif %}
     </div>
-    {% endif %}
-
-    {% if species.care_tips %}
-    <div class="care-card">
-        <h3><i class="bi bi-lightbulb"></i> Care Tips</h3>
-        <p>{{ species.care_tips }}</p>
-    </div>
-    {% endif %}
-</div>
-
-{% if species.fertilizer_type or species.fertilizer_schedule %}
-<h2><i class="bi bi-cup-straw"></i> Fertilizer Schedule</h2>
-<div class="care-grid">
-    {% if species.fertilizer_type %}
-    <div class="care-card">
-        <h3>Type</h3>
-        <p>{{ species.fertilizer_type }}</p>
-    </div>
-    {% endif %}
-
-    {% if species.fertilizer_schedule %}
-    <div class="care-card">
-        <h3>Schedule</h3>
-        <p>{{ species.fertilizer_schedule }}</p>
-    </div>
-    {% endif %}
-
-    {% if species.fertilizer_notes %}
-    <div class="care-card">
-        <h3>Notes</h3>
-        <p>{{ species.fertilizer_notes }}</p>
-    </div>
-    {% endif %}
-</div>
-{% endif %}
-
-{% if species.issues %}
-<h2><i class="bi bi-exclamation-triangle"></i> Common Issues &amp; Solutions</h2>
-<table class="issues-table">
-    <thead>
-        <tr>
-            <th>Issue</th>
-            <th>Solution</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in species.issues %}
-        <tr>
-            <td class="issue-cell">{{ item.issue }}</td>
-            <td>{{ item.solution }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
-
-<a href="{{ url_for('main.manage_species') }}" class="btn"><i class="bi bi-arrow-left"></i> Back to Species</a>
-{% endblock %}
+    {% endblock %}

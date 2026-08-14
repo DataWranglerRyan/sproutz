@@ -1,0 +1,87 @@
+<section class="species-detail-section{% if edit_mode %} editable-section{% endif %}"{% if edit_mode %} data-edit-modal="general-care-edit-modal"{% endif %}>
+    <h2 id="general-care-section"><i class="bi bi-flower2"></i> General Care{% if edit_mode %}<span class="edit-section-cue"><i class="bi bi-pencil"></i></span>{% endif %}</h2>
+    <div class="care-grid">
+        <div class="care-card" id="watering-info-section">
+            <h3><i class="bi bi-droplet"></i> Watering Info</h3>
+            <p>Water every {{ species.watering_interval_days }} days</p>
+        </div>
+
+        {% if species.sunlight %}
+        <div class="care-card" id="sunlight-section">
+            <h3><i class="bi bi-sun"></i> Sunlight</h3>
+            <p>{{ species.sunlight }}</p>
+        </div>
+        {% endif %}
+
+        {% if species.soil_type %}
+        <div class="care-card" id="soil-section">
+            <h3><i class="bi bi-moisture"></i> Soil</h3>
+            <p>{{ species.soil_type }}</p>
+        </div>
+        {% endif %}
+
+        {% if species.care_tips %}
+        <div class="care-card" id="care-tips-section">
+            <h3><i class="bi bi-lightbulb"></i> Care Tips</h3>
+            <p>{{ species.care_tips }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="species-detail-section{% if edit_mode %} editable-section{% endif %}"{% if edit_mode %} data-edit-modal="fertilizer-edit-modal"{% endif %}>
+    <h2 id="fertilizer-section"><i class="bi bi-cup-straw"></i> Fertilizer Schedule{% if edit_mode %}<span class="edit-section-cue"><i class="bi bi-pencil"></i></span>{% endif %}</h2>
+    <div class="care-grid">
+    {% if species.fertilizer_type %}
+    <div class="care-card">
+        <h3>Type</h3>
+        <p>{{ species.fertilizer_type }}</p>
+    </div>
+    {% endif %}
+
+    {% if species.fertilizer_schedule %}
+    <div class="care-card">
+        <h3>Schedule</h3>
+        <p>{{ species.fertilizer_schedule }}</p>
+    </div>
+    {% endif %}
+
+    {% if species.fertilizer_notes %}
+    <div class="care-card">
+        <h3>Notes</h3>
+        <p>{{ species.fertilizer_notes }}</p>
+    </div>
+    {% endif %}
+    {% if not species.fertilizer_type and not species.fertilizer_schedule and not species.fertilizer_notes %}
+    <div class="care-card">
+        <p>No fertilizer information recorded.</p>
+    </div>
+    {% endif %}
+</div>
+</section>
+
+<section class="species-detail-section{% if edit_mode %} editable-section{% endif %}"{% if edit_mode %} data-edit-modal="issues-edit-modal"{% endif %}>
+    <h2 id="issues-section"><i class="bi bi-exclamation-triangle"></i> Common Issues &amp; Solutions{% if edit_mode %}<span class="edit-section-cue"><i class="bi bi-pencil"></i></span>{% endif %}</h2>
+    {% if species.issues %}
+    <table class="issues-table">
+        <thead>
+            <tr>
+                <th>Issue</th>
+                <th>Solution</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in species.issues %}
+            <tr>
+                <td class="issue-cell">{{ item.issue }}</td>
+                <td>{{ item.solution }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="care-card">
+            <p>No common issues recorded.</p>
+    </div>
+    {% endif %}
+</section>

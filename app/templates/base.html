@@ -15,10 +15,13 @@
 </head>
 <body>
     <nav>
+        <img src="{{ url_for('static', filename='icons/sproutz-icon.png') }}" alt="Sproutz" class="app-nav-icon">
         <a href="{{ url_for('main.dashboard') }}"><i class="bi bi-calendar3"></i> Dashboard</a>
         <a href="{{ url_for('main.index') }}"><i class="bi bi-flower2"></i> My Plants</a>
-        <a href="{{ url_for('main.add_plant') }}"><i class="bi bi-plus-circle"></i> Add</a>
         <a href="{{ url_for('main.manage_species') }}"><i class="bi bi-tree"></i> Species</a>
+        <form method="POST" action="{{ url_for('auth.logout') }}" class="nav-logout">
+            <button type="submit" aria-label="Sign out" title="Sign out"><i class="bi bi-box-arrow-right"></i></button>
+        </form>
     </nav>
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -28,5 +31,117 @@
         {% endwith %}
         {% block content %}{% endblock %}
     </div>
+    <script>
+    function openSnoozeModal(plantId, plantName) {
+        const modal = document.getElementById('snooze-modal');
+        const modalPlant = document.getElementById('snooze-modal-plant');
+        const snoozeForm = document.getElementById('snooze-form');
+        const snoozeDays = document.getElementById('snooze-days');
+        if (!modal || !modalPlant || !snoozeForm || !snoozeDays) return;
+
+        const wateringModal = document.getElementById('watering-modal');
+        if (wateringModal) {
+            wateringModal.classList.remove('active');
+        }
+
+        modalPlant.textContent = plantName;
+        snoozeForm.action = '/plants/' + plantId + '/snooze';
+        snoozeDays.value = 1;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function openSnoozeModalFromButton(button) {
+        openSnoozeModal(button.dataset.plantId, button.dataset.plantName);
+    }
+
+    function closeSnoozeModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const modal = document.getElementById('snooze-modal');
+        if (!modal) return;
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function selectSpeciesTab(tab) {
+        const tabBar = tab.closest('.species-tabs');
+        if (!tabBar) return;
+        tabBar.querySelectorAll('.species-tab').forEach(function(item) {
+            item.classList.remove('active');
+            item.removeAttribute('aria-current');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-current', 'page');
+    }
+
+    function initializeSpeciesTabs(root) {
+        root.querySelectorAll('.species-tabs').forEach(function(tabBar) {
+            if (tabBar._sectionObserver) {
+                tabBar._sectionObserver.disconnect();
+            }
+
+            const tabTargets = Array.from(tabBar.querySelectorAll('.species-tab'))
+                .map(function(tab) {
+                    return {
+                        tab: tab,
+                        target: document.getElementById(tab.getAttribute('href').slice(1)),
+                    };
+                })
+                .filter(function(item) {
+                    return item.target;
+                });
+            if (!tabTargets.length) return;
+
+            const modalBody = document.getElementById('species-info-body');
+            const observer = new IntersectionObserver(function(entries) {
+                if (tabBar._pendingTab) {
+                    const pendingTarget = document.getElementById(
+                        tabBar._pendingTab.getAttribute('href').slice(1)
+                    );
+                    const pendingEntry = entries.find(function(entry) {
+                        return entry.target === pendingTarget;
+                    });
+                    if (!pendingEntry || !pendingEntry.isIntersecting) return;
+                    selectSpeciesTab(tabBar._pendingTab);
+                    tabBar._pendingTab = null;
+                    return;
+                }
+
+                const visible = entries
+                    .filter(function(entry) { return entry.isIntersecting; })
+                    .sort(function(a, b) {
+                        return a.boundingClientRect.top - b.boundingClientRect.top;
+                    });
+                if (visible.length) {
+                    const match = tabTargets.find(function(item) {
+                        return item.target === visible[0].target;
+                    });
+                    if (match) selectSpeciesTab(match.tab);
+                }
+            }, {
+                root: tabBar.closest('#species-info-modal') ? modalBody : null,
+                rootMargin: '-10% 0px -65% 0px',
+                threshold: [0, 1],
+            });
+
+            tabTargets.forEach(function(item) {
+                observer.observe(item.target);
+            });
+            tabBar._sectionObserver = observer;
+        });
+    }
+
+    document.addEventListener('click', function(event) {
+        const tab = event.target.closest('.species-tab');
+        if (tab) {
+            tab.closest('.species-tabs')._pendingTab = tab;
+            selectSpeciesTab(tab);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeSpeciesTabs(document);
+    });
+    </script>
 </body>
 </html>

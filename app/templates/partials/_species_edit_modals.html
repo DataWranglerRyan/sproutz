@@ -1,0 +1,106 @@
+<div class="modal-overlay species-edit-modal" id="general-care-edit-modal" onclick="closeSpeciesEditModal(event)">
+    <div class="modal-sheet species-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>General Care</h3>
+            <button class="modal-close" type="button" onclick="closeSpeciesEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{{ url_for('main.edit_species', species_id=species.id) }}">
+                <input type="hidden" name="section" value="general">
+                <label for="edit-watering-interval">Water every (days)</label>
+                <input type="number" id="edit-watering-interval" name="watering_interval_days" value="{{ species.watering_interval_days }}" required min="1">
+                <label for="edit-sunlight">Sunlight</label>
+                <input type="text" id="edit-sunlight" name="sunlight" value="{{ species.sunlight or '' }}">
+                <label for="edit-soil">Soil</label>
+                <input type="text" id="edit-soil" name="soil_type" value="{{ species.soil_type or '' }}">
+                <label for="edit-care-tips">Care Tips</label>
+                <textarea id="edit-care-tips" name="care_tips" rows="4">{{ species.care_tips or '' }}</textarea>
+                <button type="submit" class="btn" style="width: 100%;">Save General Care</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay species-edit-modal" id="fertilizer-edit-modal" onclick="closeSpeciesEditModal(event)">
+    <div class="modal-sheet species-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Fertilizer Schedule</h3>
+            <button class="modal-close" type="button" onclick="closeSpeciesEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{{ url_for('main.edit_species', species_id=species.id) }}">
+                <input type="hidden" name="section" value="fertilizer">
+                <label for="edit-fertilizer-type">Type</label>
+                <input type="text" id="edit-fertilizer-type" name="fertilizer_type" value="{{ species.fertilizer_type or '' }}">
+                <label for="edit-fertilizer-schedule">Schedule</label>
+                <input type="text" id="edit-fertilizer-schedule" name="fertilizer_schedule" value="{{ species.fertilizer_schedule or '' }}">
+                <label for="edit-fertilizer-notes">Notes</label>
+                <textarea id="edit-fertilizer-notes" name="fertilizer_notes" rows="4">{{ species.fertilizer_notes or '' }}</textarea>
+                <button type="submit" class="btn" style="width: 100%;">Save Fertilizer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay species-edit-modal" id="issues-edit-modal" onclick="closeSpeciesEditModal(event)">
+    <div class="modal-sheet species-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Common Issues &amp; Solutions</h3>
+            <button class="modal-close" type="button" onclick="closeSpeciesEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{{ url_for('main.edit_species', species_id=species.id) }}">
+                <input type="hidden" name="section" value="issues">
+                <div id="edit-issues-container">
+                    {% for item in species.issues %}
+                    <div class="issue-row">
+                        <input type="text" name="issue[]" value="{{ item.issue }}" placeholder="Issue">
+                        <input type="text" name="solution[]" value="{{ item.solution }}" placeholder="Solution">
+                        <button type="button" class="btn delete remove-edit-row">✕</button>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" id="add-edit-issue" class="btn add-issue-btn">+ Add Issue</button>
+                <button type="submit" class="btn" style="width: 100%;">Save Issues</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.editable-section').forEach(function(section) {
+    section.addEventListener('click', function() {
+        const modal = document.getElementById(section.dataset.editModal);
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    });
+});
+
+function closeSpeciesEditModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.querySelectorAll('.species-edit-modal').forEach(function(modal) {
+        modal.classList.remove('active');
+    });
+    document.body.style.overflow = '';
+}
+
+document.getElementById('add-edit-issue').addEventListener('click', function() {
+    const container = document.getElementById('edit-issues-container');
+    const row = document.createElement('div');
+    row.className = 'issue-row';
+    row.innerHTML = `
+        <input type="text" name="issue[]" placeholder="Issue">
+        <input type="text" name="solution[]" placeholder="Solution">
+        <button type="button" class="btn delete remove-edit-row">✕</button>
+    `;
+    container.appendChild(row);
+});
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('remove-edit-row')) {
+        event.target.parentElement.remove();
+    }
+});
+</script>

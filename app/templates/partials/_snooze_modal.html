@@ -1,0 +1,18 @@
+<div class="modal-overlay" id="snooze-modal" onclick="closeSnoozeModal(event)">
+    <div class="modal-sheet snooze-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Snooze Watering</h3>
+            <button class="modal-close" type="button" onclick="closeSnoozeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="snooze-modal-plant" id="snooze-modal-plant"></p>
+            <form method="POST" id="snooze-form" class="snooze-compact-form">
+                <div class="snooze-input-group">
+                    <label for="snooze-days">Days</label>
+                    <input type="number" id="snooze-days" name="days" min="1" value="1" required>
+                </div>
+                <button type="submit" class="btn snooze-confirm-btn">Snooze</button>
+            </form>
+        </div>
+    </div>
+</div>

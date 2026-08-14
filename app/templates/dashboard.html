@@ -3,58 +3,130 @@
 {% block content %}
 <h1><i class="bi bi-calendar3"></i> Dashboard</h1>
 
-<!-- Monthly Calendar -->
-<div class="calendar-container">
-    <div class="calendar-nav">
-        <a href="{{ url_for('main.dashboard', year=prev_year, month=prev_month) }}" class="calendar-nav-btn">‹</a>
-        <h2 class="calendar-month">{{ month_name }}</h2>
-        <a href="{{ url_for('main.dashboard', year=next_year, month=next_month) }}" class="calendar-nav-btn">›</a>
-    </div>
-    {% if current_year != prev_year or current_month != prev_month %}
-    <div class="calendar-today-link">
-        <a href="{{ url_for('main.dashboard') }}">Today</a>
-    </div>
-    {% endif %}
-    <div class="calendar-grid">
-        <div class="calendar-header">S</div>
-        <div class="calendar-header">M</div>
-        <div class="calendar-header">T</div>
-        <div class="calendar-header">W</div>
-        <div class="calendar-header">T</div>
-        <div class="calendar-header">F</div>
-        <div class="calendar-header">S</div>
-        {% for day in calendar_days %}
-            {% if day is none %}
-                <div class="calendar-cell empty"></div>
-            {% else %}
-                <div class="calendar-cell {{ 'today' if day.is_today else '' }} {{ 'has-watering' if day.has_watering else '' }} {{ 'is-overdue' if day.is_overdue else '' }}"
-                     {% if day.has_watering %}
-                     role="button"
-                     tabindex="0"
-                     data-date="{{ day.date.strftime('%b %d') }}"
-                     data-plants='{{ day.plants | tojson }}'
-                     onclick="openWateringModal(this)"
-                     {% endif %}>
-                    <span class="calendar-day-num">{{ day.day }}</span>
-                    {% if day.has_watering %}
-                        <span class="calendar-dot {{ 'overdue' if day.is_overdue else 'scheduled' }}"></span>
-                    {% endif %}
-                </div>
-            {% endif %}
+{% if all_plants %}
+<form class="dashboard-filter" method="GET">
+    <label for="plant-filter"><i class="bi bi-funnel"></i> View</label>
+    <select id="species-filter" name="species_id" onchange="this.form.elements['location'].value=''; this.form.elements['plant_id'].value=''; this.form.submit()">
+        <option value="">All species</option>
+        {% for species in all_species %}
+        <option value="{{ species.id }}" {{ 'selected' if species.id == selected_species_id else '' }}>{{ species.name }}</option>
         {% endfor %}
-    </div>
-    <div class="calendar-legend">
-        <span class="legend-item"><span class="calendar-dot today-dot"></span> Today</span>
-        <span class="legend-item"><span class="calendar-dot scheduled"></span> Watering scheduled</span>
-        <span class="legend-item"><span class="calendar-dot overdue"></span> Overdue</span>
+    </select>
+    <select id="location-filter" name="location" onchange="this.form.elements['plant_id'].value=''; this.form.submit()">
+        <option value="">All locations</option>
+        {% for location in available_locations %}
+        <option value="{{ location }}" {{ 'selected' if location == selected_location else '' }}>{{ location }}</option>
+        {% endfor %}
+    </select>
+    <select id="plant-filter" name="plant_id" onchange="this.form.submit()">
+        <option value="">All plants</option>
+        {% for plant in available_plants %}
+        <option value="{{ plant.id }}" {{ 'selected' if plant.id == selected_plant_id else '' }}>{{ plant.name }}</option>
+        {% endfor %}
+    </select>
+    {% if selected_species_id or selected_location or selected_plant_id %}
+    <a href="{{ url_for('main.dashboard', year=current_year, month=current_month) }}" class="clear-filters-btn" aria-label="Clear filters" title="Clear filters">
+        <i class="bi bi-x-circle"></i>
+    </a>
+    {% endif %}
+    <noscript><button type="submit" class="btn">Filter</button></noscript>
+</form>
+{% endif %}
+
+<div class="dashboard-calendar-layout">
+    <aside class="next-up-board">
+        <div class="next-up-header">
+            <h2><i class="bi bi-list-check"></i> Next Up</h2>
+            <span>Watering</span>
+        </div>
+        <div class="next-up-group today">
+            <h3>Today</h3>
+            {% if next_up.today %}
+                {% for plant in next_up.today %}
+                <div class="next-up-plant">
+                    <i class="bi bi-droplet-fill"></i>
+                    <div>
+                        <strong>{{ plant.name }}</strong>
+                        <span>{{ plant.species.name }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="next-up-empty">Nothing due today.</p>
+            {% endif %}
+        </div>
+        <div class="next-up-group tomorrow">
+            <h3>Tomorrow</h3>
+            {% if next_up.tomorrow %}
+                {% for plant in next_up.tomorrow %}
+                <div class="next-up-plant">
+                    <i class="bi bi-droplet"></i>
+                    <div>
+                        <strong>{{ plant.name }}</strong>
+                        <span>{{ plant.species.name }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="next-up-empty">Nothing due tomorrow.</p>
+            {% endif %}
+        </div>
+    </aside>
+
+    <!-- Monthly Calendar -->
+    <div class="calendar-container">
+        <div class="calendar-nav">
+            <a href="{{ url_for('main.dashboard', year=prev_year, month=prev_month, plant_id=selected_plant_id, species_id=selected_species_id, location=selected_location) }}" class="calendar-nav-btn">‹</a>
+            <h2 class="calendar-month">{{ month_name }}</h2>
+            <a href="{{ url_for('main.dashboard', year=next_year, month=next_month, plant_id=selected_plant_id, species_id=selected_species_id, location=selected_location) }}" class="calendar-nav-btn">›</a>
+        </div>
+        {% if current_year != prev_year or current_month != prev_month %}
+        <div class="calendar-today-link">
+            <a href="{{ url_for('main.dashboard', plant_id=selected_plant_id, species_id=selected_species_id, location=selected_location) }}">Today</a>
+        </div>
+        {% endif %}
+        <div class="calendar-grid">
+            <div class="calendar-header">S</div>
+            <div class="calendar-header">M</div>
+            <div class="calendar-header">T</div>
+            <div class="calendar-header">W</div>
+            <div class="calendar-header">T</div>
+            <div class="calendar-header">F</div>
+            <div class="calendar-header">S</div>
+            {% for day in calendar_days %}
+                {% if day is none %}
+                    <div class="calendar-cell empty"></div>
+                {% else %}
+                    <div class="calendar-cell {{ 'today' if day.is_today else '' }} {{ 'has-watering' if day.has_watering else '' }} {{ 'is-overdue' if day.is_overdue else '' }}"
+                         {% if day.has_watering %}
+                         role="button"
+                         tabindex="0"
+                         data-date="{{ day.date.strftime('%b %d') }}"
+                         data-plants='{{ day.plants | tojson }}'
+                         onclick="openWateringModal(this)"
+                         {% endif %}>
+                        <span class="calendar-day-num">{{ day.day }}</span>
+                        {% if day.has_watering %}
+                            <span class="calendar-dot {{ 'overdue' if day.is_overdue else 'scheduled' }}"></span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="calendar-legend">
+            <span class="legend-item"><span class="calendar-dot today-dot"></span> Today</span>
+            <span class="legend-item"><span class="calendar-dot scheduled"></span> Watering scheduled</span>
+            <span class="legend-item"><span class="calendar-dot overdue"></span> Overdue</span>
+        </div>
     </div>
 </div>
 
 <!-- Timeline -->
 <h2><i class="bi bi-clock-history"></i> Timeline</h2>
 {% if days %}
+{% macro render_timeline(days_to_render) %}
 <div class="timeline">
-    {% for date, events in days.items() %}
+    {% for date, events in days_to_render.items() %}
     <div class="timeline-day {{ 'today' if date == today else '' }}">
         <div class="timeline-date">
             {% if date == today %}
@@ -89,11 +161,38 @@
                     {% else %}Scheduled
                     {% endif %}
                 </span>
+                {% if event.type == 'watered' and event.undoable %}
+                <form method="POST" action="{{ url_for('main.undo_water_plant', plant_id=event.plant_id) }}" class="timeline-undo-form">
+                    <button type="submit" class="btn undo" aria-label="Undo last watering for {{ event.plant_name }}" title="Undo last watering">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </button>
+                </form>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
     </div>
     {% endfor %}
+</div>
+{% endmacro %}
+
+<div class="timeline-sections">
+    <section class="timeline-section">
+        <h3 class="timeline-section-title"><i class="bi bi-clock-history"></i> Today &amp; Past</h3>
+        {% if past_days %}
+            {{ render_timeline(past_days) }}
+        {% else %}
+            <p class="timeline-empty">No past watering activity.</p>
+        {% endif %}
+    </section>
+    <section class="timeline-section">
+        <h3 class="timeline-section-title"><i class="bi bi-calendar-check"></i> Upcoming</h3>
+        {% if upcoming_days %}
+            {{ render_timeline(upcoming_days) }}
+        {% else %}
+            <p class="timeline-empty">No upcoming watering scheduled.</p>
+        {% endif %}
+    </section>
 </div>
 {% else %}
 <p>No plants yet! <a href="{{ url_for('main.add_plant') }}">Add your first plant</a> to see your watering timeline.</p>
@@ -123,14 +222,28 @@ function openWateringModal(cell) {
 
     let html = '<ul class="modal-plant-list">';
     plants.forEach(function(plant) {
+        const safePlantName = String(plant.name)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
         html += '<li class="modal-plant-item ' + (plant.overdue ? 'overdue' : '') + '">';
         html += '<div class="modal-plant-info">';
         html += '<span class="modal-plant-name">' + plant.name + '</span>';
         html += '<span class="modal-plant-species">' + plant.species + '</span>';
         html += '</div>';
+        html += '<div class="modal-plant-actions">';
+        if (plant.undoable) {
+            html += '<form method="POST" action="/plants/' + plant.id + '/water/undo">';
+            html += '<button type="submit" class="btn undo modal-undo-btn" aria-label="Undo last watering for ' + safePlantName + '" title="Undo last watering"><i class="bi bi-arrow-counterclockwise"></i></button>';
+            html += '</form>';
+        }
+        html += '<button type="button" class="btn snooze modal-snooze-btn" aria-label="Snooze watering" title="Snooze watering" data-plant-id="' + plant.id + '" data-plant-name="' + safePlantName + '" onclick="openSnoozeModalFromButton(this)"><i class="bi bi-moon-stars"></i></button>';
         html += '<form method="POST" action="/plants/' + plant.id + '/water">';
         html += '<button type="submit" class="btn water modal-water-btn"><i class="bi bi-droplet-fill"></i> Water</button>';
         html += '</form>';
+        html += '</div>';
         html += '</li>';
     });
     html += '</ul>';
@@ -146,5 +259,8 @@ function closeModal(event) {
     modal.classList.remove('active');
     document.body.style.overflow = '';
 }
+
 </script>
+
+{% include "partials/_snooze_modal.html" %}
 {% endblock %}

@@ -51,6 +51,13 @@ nav {
     -webkit-backdrop-filter: blur(8px);
 }
 
+.app-nav-icon {
+    width: 1.7rem;
+    height: 1.7rem;
+    flex: 0 0 auto;
+    align-self: center;
+}
+
 nav a {
     color: var(--stone-light);
     text-decoration: none;
@@ -62,6 +69,63 @@ nav a {
 
 nav a:hover {
     color: var(--moss);
+}
+
+.nav-logout {
+    margin: 0 0 0 auto;
+}
+
+.nav-logout button {
+    border: none;
+    background: transparent;
+    color: var(--stone-light);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.nav-logout button:hover {
+    color: var(--moss);
+}
+
+.login-page {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: 1.25rem;
+}
+
+.login-card {
+    width: min(100%, 360px);
+    padding: 2rem;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 4px 18px var(--shadow-hover);
+    text-align: center;
+}
+
+.login-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.login-card h1 {
+    margin-bottom: 0.25rem;
+}
+
+.login-card > p {
+    margin-bottom: 1.25rem;
+    color: var(--stone-light);
+    font-size: 0.85rem;
+}
+
+.login-card form {
+    margin: 0;
+    text-align: left;
+}
+
+.login-card .btn {
+    width: 100%;
 }
 
 /* ─── Layout ─── */
@@ -87,6 +151,46 @@ h2 {
     letter-spacing: 0.02em;
 }
 
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.page-header h1 {
+    margin-bottom: 0;
+}
+
+.subtle-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--pebble);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--stone-light);
+    font-family: inherit;
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.subtle-add-btn:hover {
+    color: var(--moss);
+    border-color: var(--moss-muted);
+    background: white;
+}
+
+.subtle-add-btn:active {
+    transform: scale(0.97);
+}
+
 /* ─── Plant Cards ─── */
 .plant-list {
     display: flex;
@@ -97,7 +201,7 @@ h2 {
 .plant-card {
     background: white;
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1rem;
     box-shadow: 0 1px 3px var(--shadow);
     transition: box-shadow var(--transition), transform var(--transition);
 }
@@ -123,6 +227,12 @@ h2 {
     color: var(--stone);
 }
 
+.plant-card-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .plant-card-species {
     color: var(--stone-light);
     font-size: 0.8rem;
@@ -138,18 +248,66 @@ h2 {
     color: var(--stone-light);
 }
 
+.plant-info-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--stone-light);
+    font-size: 0.9rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color var(--transition);
+}
+
+.plant-info-btn:hover {
+    color: var(--moss);
+}
+
 .plant-card-actions {
     display: flex;
     gap: 0.5rem;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
+    align-items: stretch;
+}
+
+.plant-card-actions form {
+    margin-bottom: 0;
+}
+
+.plant-card-actions > form:not(.delete-form):not(.undo-form) {
+    flex: 1;
 }
 
 .plant-card-actions .btn {
     margin-top: 0;
-    flex: 1;
     text-align: center;
     padding: 0.6rem;
     font-size: 0.9rem;
+}
+
+.plant-card-actions .delete-form {
+    flex: 0 0 auto;
+}
+
+.snooze-btn {
+    flex: 0 0 auto;
+}
+
+.plant-card-actions .snooze-btn,
+.plant-card-actions .undo {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
 }
 
 /* ─── Tables ─── */
@@ -179,6 +337,17 @@ th {
 
 tr.overdue {
     background: var(--alert-light);
+}
+
+.species-row {
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.species-row:hover,
+.species-row:focus-visible {
+    background: var(--sand-warm);
+    outline: none;
 }
 
 /* ─── Badges ─── */
@@ -249,6 +418,205 @@ textarea {
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
     font-weight: 300;
+}
+
+.species-detail-header {
+    position: sticky;
+    top: 3.5rem;
+    z-index: 90;
+    padding: 0.2rem 0 0;
+    background: var(--sand);
+}
+
+.species-detail-page {
+    margin-top: 0;
+}
+
+body:has(.species-detail-page) .container {
+    margin-top: 0;
+}
+
+.species-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.species-detail-header .species-title-row h1 {
+    margin-bottom: 0.35rem;
+}
+
+.species-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: auto;
+    border: 1px solid var(--pebble);
+    border-radius: 50%;
+    color: var(--stone-light);
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.species-edit-btn:hover {
+    background: white;
+    border-color: var(--moss-muted);
+    color: var(--moss);
+}
+
+.species-edit-save-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: auto;
+    border: 1px solid var(--moss-muted);
+    border-radius: 50%;
+    background: var(--moss);
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background var(--transition), transform 0.1s ease;
+}
+
+.species-edit-save-btn:hover {
+    background: var(--moss-dark);
+}
+
+.edit-mode-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.35rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    background: var(--water-light);
+    border: 1px solid var(--water);
+    color: #3d6b66;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.edit-section-cue {
+    margin-left: 0.45rem;
+    color: var(--moss-muted);
+    font-size: 0.72em;
+    font-weight: 400;
+}
+
+.species-edit-page .species-detail-header + .species-detail-section h2 {
+    margin-top: 0.5rem;
+}
+
+.editable-section {
+    cursor: pointer;
+    border-radius: 12px;
+    outline: 1px solid transparent;
+    outline-offset: 2px;
+    transition: background var(--transition), outline-color var(--transition);
+}
+
+.editable-section:hover {
+    background: rgba(92, 122, 94, 0.08);
+    outline-color: rgba(92, 122, 94, 0.35);
+}
+
+.editable-section:hover .care-card {
+    box-shadow: 0 3px 10px var(--shadow-hover);
+}
+
+.species-edit-page label {
+    margin-top: 0.5rem;
+}
+
+.species-edit-page input,
+.species-edit-page textarea {
+    margin-top: 0.25rem;
+}
+
+.species-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid var(--pebble);
+    border-radius: 50%;
+    color: var(--stone-light);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.species-back-btn:hover {
+    background: white;
+    border-color: var(--moss-muted);
+    color: var(--moss);
+}
+
+.species-detail-header h1 {
+    margin-bottom: 0.75rem;
+}
+
+.species-tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin: 0 0 0.4rem;
+    padding: 0.2rem;
+    overflow-x: auto;
+    position: static;
+    z-index: auto;
+    border: 1px solid var(--pebble);
+    border-radius: 12px;
+    background: var(--sand-warm);
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}
+
+.species-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.species-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 2.1rem;
+    min-width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 9px;
+    color: var(--stone-light);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color var(--transition), background var(--transition);
+}
+
+.species-tab:hover,
+.species-tab:focus-visible,
+.species-tab.active {
+    background: white;
+    color: var(--moss);
+    outline: none;
+}
+
+.species-detail-section,
+.care-card[id],
+#watering-info-section,
+.species-detail-section h2 {
+    scroll-margin-top: 10rem;
+}
+
+.species-detail-header + .species-detail-section h2 {
+    margin-top: 0.5rem;
 }
 
 /* ─── Care Cards ─── */
@@ -376,6 +744,32 @@ textarea {
     background: #5d8e88;
 }
 
+.btn.snooze {
+    background: transparent;
+    color: var(--stone-light);
+    border: 1px solid var(--pebble);
+}
+
+.btn.snooze:hover {
+    background: var(--sand-warm);
+    color: var(--moss);
+    border-color: var(--moss-muted);
+}
+
+.btn.undo {
+    background: transparent;
+    color: var(--stone-light);
+    border: 1px solid var(--pebble);
+    padding: 0.42rem 0.58rem;
+    font-size: 0.74rem;
+}
+
+.btn.undo:hover {
+    background: var(--water-light);
+    color: var(--water);
+    border-color: var(--water);
+}
+
 .btn.delete {
     background: transparent;
     color: var(--stone-light);
@@ -413,15 +807,175 @@ textarea {
 }
 
 /* ─── Calendar ─── */
+.dashboard-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: -0.75rem 0 1rem;
+}
+
+.dashboard-filter label {
+    margin: 0;
+    color: var(--stone-light);
+    font-size: 0.75rem;
+}
+
+.dashboard-filter select {
+    width: auto;
+    min-width: 10rem;
+    padding: 0.4rem 1.8rem 0.4rem 0.65rem;
+    font-size: 0.78rem;
+}
+
+.plant-filter {
+    margin: 0 0 1rem;
+}
+
+.clear-filters-btn {
+    display: inline-flex;
+    align-items: center;
+    color: var(--stone-light);
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.clear-filters-btn:hover {
+    color: var(--moss);
+}
+
+.dashboard-calendar-layout {
+    display: grid;
+    grid-template-columns: minmax(190px, 1.4fr) minmax(250px, 1.6fr);
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 2rem;
+}
+
+.next-up-board {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px var(--shadow);
+    height: 100%;
+}
+
+.next-up-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--pebble);
+}
+
+.next-up-header h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.next-up-header > span {
+    color: var(--stone-light);
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.next-up-group {
+    padding: 0.8rem 0 0.25rem;
+}
+
+.next-up-group + .next-up-group {
+    border-top: 1px solid var(--pebble);
+}
+
+.next-up-group h3 {
+    margin-bottom: 0.5rem;
+    color: var(--stone-light);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.next-up-group.today h3 {
+    color: var(--alert);
+}
+
+.next-up-plant {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0;
+}
+
+.next-up-plant > i {
+    color: var(--water);
+    font-size: 0.8rem;
+}
+
+.next-up-group.today .next-up-plant > i {
+    color: var(--alert);
+}
+
+.next-up-plant div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.next-up-plant strong {
+    overflow: hidden;
+    color: var(--stone);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.next-up-plant span {
+    overflow: hidden;
+    color: var(--stone-light);
+    font-size: 0.68rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.next-up-empty {
+    color: var(--stone-light);
+    font-size: 0.75rem;
+}
+
 .calendar-container {
     background: white;
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 1px 3px var(--shadow);
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     max-width: 320px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.dashboard-calendar-layout .calendar-container {
+    max-width: none;
+    width: 90%;
+    margin-right: 0;
+    margin-left: auto;
+}
+
+@media (max-width: 560px) {
+    .dashboard-calendar-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-calendar-layout .calendar-container {
+        max-width: 320px;
+        width: auto;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }
 
 .calendar-nav {
@@ -569,6 +1123,43 @@ textarea {
 }
 
 /* ─── Timeline ─── */
+.timeline-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.timeline-section {
+    padding: 1rem;
+    border: 1px solid var(--pebble);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.timeline-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.75rem;
+    color: var(--stone);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.timeline-section-title i {
+    color: var(--moss-muted);
+}
+
+.timeline-empty {
+    margin: 0;
+    color: var(--stone-light);
+    font-size: 0.8rem;
+}
+
+.timeline-section .timeline {
+    gap: 0.75rem;
+}
+
 .timeline {
     display: flex;
     flex-direction: column;
@@ -697,6 +1288,17 @@ textarea {
     color: var(--bark);
 }
 
+.timeline-undo-form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.timeline-undo-form .btn.undo {
+    margin-top: 0;
+    padding: 0.42rem 0.58rem;
+    font-size: 0.74rem;
+}
+
 /* ─── Modal / Bottom Sheet ─── */
 .modal-overlay {
     display: none;
@@ -771,10 +1373,11 @@ textarea {
 
 .modal-plant-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--pebble);
+    gap: 0.75rem;
 }
 
 .modal-plant-item:last-child {
@@ -808,17 +1411,185 @@ textarea {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
     white-space: nowrap;
+    width: auto;
+    text-align: center;
+}
+
+.modal-plant-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.modal-plant-actions form {
+    margin-bottom: 0;
+}
+
+.modal-snooze-btn {
+    margin-top: 0;
+    padding: 0.5rem 0.56rem;
+    font-size: 0.85rem;
+    width: auto;
+    text-align: center;
+}
+
+.modal-undo-btn {
+    margin-top: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.74rem;
+}
+
+.species-info-header {
+    align-items: flex-start;
+}
+
+.species-info-heading {
+    flex: 1;
+    min-width: 0;
+}
+
+.species-info-heading .species-tabs {
+    margin: 0.5rem 0 0;
+}
+
+#species-info-body .species-detail-section,
+#species-info-body .care-card[id],
+#species-info-body #watering-info-section,
+#species-info-body .species-detail-section h2 {
+    scroll-margin-top: 0;
+}
+
+#species-info-body .species-detail-section h2 {
+    margin-top: 0.5rem;
+}
+
+#species-info-modal .modal-sheet {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#species-info-modal .modal-header {
+    flex-shrink: 0;
+}
+
+#species-info-modal .modal-body {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+}
+
+.species-modal-sheet,
+.form-modal-sheet {
+    width: min(520px, calc(100% - 1.25rem));
+    max-width: 520px;
+    border-radius: 20px;
 }
 
 .species-modal-sheet {
-    max-height: 90vh;
-    border-radius: 20px 20px 0 0;
+    max-height: 95vh;
+}
+
+.species-modal-sheet .modal-body,
+.form-modal-sheet .modal-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .species-modal-sheet .modal-body {
-    overflow-y: auto;
+    max-height: calc(95vh - 4rem);
+}
+
+.form-modal-sheet .modal-body {
     max-height: calc(90vh - 4rem);
-    -webkit-overflow-scrolling: touch;
+}
+
+#snooze-modal .snooze-modal-sheet {
+    width: min(340px, calc(100% - 1.25rem));
+    max-width: 340px;
+    max-height: none;
+    padding: 1rem;
+    border-radius: 18px;
+}
+
+#snooze-modal .modal-header {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.45rem;
+}
+
+#snooze-modal .modal-header h3 {
+    font-size: 0.92rem;
+}
+
+#snooze-modal .modal-close {
+    font-size: 1.15rem;
+    padding: 0.1rem 0.35rem;
+}
+
+.snooze-modal-plant {
+    margin: 0 0 0.55rem;
+    color: var(--stone-light);
+    font-size: 0.82rem;
+}
+
+.snooze-compact-form {
+    margin-bottom: 0;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.snooze-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 76px;
+    max-width: 92px;
+}
+
+.snooze-input-group label {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--stone-light);
+}
+
+.snooze-input-group input {
+    margin-top: 0;
+    padding: 0.45rem 0.55rem;
+    font-size: 0.9rem;
+}
+
+.snooze-confirm-btn {
+    margin-top: 0;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+#species-modal.active,
+#add-plant-modal.active,
+#snooze-modal.active {
+    align-items: flex-start;
+    padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+#watering-modal.active {
+    align-items: flex-start;
+    padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+#watering-modal .modal-sheet {
+    width: min(520px, calc(100% - 1.25rem));
+    max-width: 520px;
+    border-radius: 20px;
 }
 
 /* ─── Tappable Calendar Cells ─── */

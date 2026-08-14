@@ -6,7 +6,10 @@
 {% if species %}
 <form method="POST">
     <label for="name">Plant Name:</label>
-    <input type="text" id="name" name="name" required placeholder="e.g. Living Room Fern">
+    <input type="text" id="name" name="name" placeholder="Optional (auto: Location + Species)">
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required placeholder="e.g. Living Room">
 
     <label for="species_id">Species:</label>
     <select id="species_id" name="species_id" required>

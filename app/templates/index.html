@@ -1,7 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1><i class="bi bi-flower2"></i> My Plants</h1>
+<div class="page-header">
+    <h1><i class="bi bi-flower2"></i> My Plants</h1>
+    <button class="subtle-add-btn" type="button" onclick="openAddPlantModal()">
+        <i class="bi bi-plus-lg"></i> Add plant
+    </button>
+</div>
+
+{% if filter_species %}
+<form class="dashboard-filter plant-filter" method="GET">
+    <label for="plant-species-filter"><i class="bi bi-funnel"></i> Filter</label>
+    <select id="plant-species-filter" name="species_id" onchange="this.form.elements['location'].value=''; this.form.submit()">
+        <option value="">All species</option>
+        {% for filter_species_item in filter_species %}
+        <option value="{{ filter_species_item.id }}" {{ 'selected' if filter_species_item.id == selected_species_id else '' }}>{{ filter_species_item.name }}</option>
+        {% endfor %}
+    </select>
+    <select id="plant-location-filter" name="location" onchange="this.form.submit()">
+        <option value="">All locations</option>
+        {% for location in available_locations %}
+        <option value="{{ location }}" {{ 'selected' if location == selected_location else '' }}>{{ location }}</option>
+        {% endfor %}
+    </select>
+    {% if selected_species_id or selected_location %}
+    <a href="{{ url_for('main.index') }}" class="clear-filters-btn" aria-label="Clear filters" title="Clear filters">
+        <i class="bi bi-x-circle"></i>
+    </a>
+    {% endif %}
+    <noscript><button type="submit" class="btn">Filter</button></noscript>
+</form>
+{% endif %}
 
 {% if plants %}
 <div class="plant-list">
@@ -9,8 +38,15 @@
     <div class="plant-card {{ 'overdue' if plant.is_overdue else '' }}">
         <div class="plant-card-header">
             <div>
-                <div class="plant-card-name">{{ plant.name }}</div>
-                <div class="plant-card-species">{{ plant.species.name }}</div>
+                <div class="plant-card-name-row">
+                    <div class="plant-card-name">{{ plant.name }}</div>
+                    <button type="button" class="plant-info-btn" data-species-name="{{ plant.species.name }}" aria-label="View {{ plant.species.name }} care information" title="View care information" onclick="openSpeciesInfoModal({{ plant.id }}, this)">
+                        <i class="bi bi-info-circle"></i>
+                    </button>
+                </div>
+                <div class="plant-card-species">
+                    {{ plant.species.name }}{% if plant.location %} · {{ plant.location }}{% endif %}
+                </div>
             </div>
             {% if plant.is_overdue %}
                 <span class="badge overdue">Overdue!</span>
@@ -24,16 +60,114 @@
         </div>
         <div class="plant-card-actions">
             <form method="POST" action="{{ url_for('main.water_plant', plant_id=plant.id) }}">
-                <button type="submit" class="btn water"><i class="bi bi-droplet-fill"></i> Water</button>
+                <button type="submit" class="btn water" aria-label="Water {{ plant.name }}" title="Water {{ plant.name }}"><i class="bi bi-droplet-fill"></i></button>
             </form>
-            <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}">
+            {% if plant.id in undoable_plant_ids %}
+            <form method="POST" action="{{ url_for('main.undo_water_plant', plant_id=plant.id) }}" class="undo-form">
+                <button type="submit" class="btn undo" aria-label="Undo last watering" title="Undo last watering">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+            </form>
+            {% endif %}
+            <button type="button" class="btn snooze snooze-btn" aria-label="Snooze watering" title="Snooze watering" onclick='openSnoozeModal({{ plant.id }}, {{ plant.name|tojson }})'>
+                <i class="bi bi-moon-stars"></i>
+            </button>
+            <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}" class="delete-form">
                 <button type="submit" class="btn delete"><i class="bi bi-trash"></i></button>
             </form>
         </div>
+        <template id="species-care-{{ plant.id }}">
+            {% with species=plant.species %}
+                {% include "partials/_species_care.html" %}
+            {% endwith %}
+        </template>
     </div>
     {% endfor %}
 </div>
 {% else %}
-<p>No plants yet! <a href="{{ url_for('main.add_plant') }}">Add your first plant</a>.</p>
+<p>No plants yet! <a href="#" onclick="openAddPlantModal(); return false;">Add your first plant</a>.</p>
 {% endif %}
+
+<!-- Species Care Modal -->
+<div class="modal-overlay" id="species-info-modal" onclick="closeSpeciesInfoModal(event)">
+    <div class="modal-sheet species-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header species-info-header">
+            <div class="species-info-heading">
+                <h3 id="species-info-title">Plant care</h3>
+                {% include "partials/_species_tabs.html" %}
+            </div>
+            <button class="modal-close" type="button" onclick="closeSpeciesInfoModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="species-info-body"></div>
+    </div>
+</div>
+
+<!-- Add Plant Modal -->
+<div class="modal-overlay" id="add-plant-modal" onclick="closeAddPlantModal(event)">
+    <div class="modal-sheet form-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Add Plant</h3>
+            <button class="modal-close" type="button" onclick="closeAddPlantModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            {% if species %}
+            <form method="POST" action="{{ url_for('main.add_plant') }}">
+                <label for="modal-plant-name">Plant Name:</label>
+                <input type="text" id="modal-plant-name" name="name" placeholder="Optional (auto: Location + Species)">
+
+                <label for="modal-plant-location">Location:</label>
+                <input type="text" id="modal-plant-location" name="location" required placeholder="e.g. Living Room">
+
+                <label for="modal-species-id">Species:</label>
+                <select id="modal-species-id" name="species_id" required>
+                    <option value="">-- Select species --</option>
+                    {% for s in species %}
+                    <option value="{{ s.id }}">{{ s.name }} (every {{ s.watering_interval_days }} days)</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn" style="width: 100%;">Add Plant</button>
+            </form>
+            {% else %}
+            <p>No species defined yet. <a href="{{ url_for('main.manage_species') }}">Add a species first</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "partials/_snooze_modal.html" %}
+
+<script>
+function openAddPlantModal() {
+    document.getElementById('add-plant-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAddPlantModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('add-plant-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function openSpeciesInfoModal(plantId, button) {
+    const template = document.getElementById('species-care-' + plantId);
+    const modal = document.getElementById('species-info-modal');
+    const body = document.getElementById('species-info-body');
+    const title = document.getElementById('species-info-title');
+    if (!template || !button || !modal || !body || !title) return;
+
+    title.textContent = button.dataset.speciesName;
+    body.replaceChildren(template.content.cloneNode(true));
+    initializeSpeciesTabs(document);
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSpeciesInfoModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('species-info-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+</script>
 {% endblock %}

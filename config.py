@@ -1,14 +1,23 @@
 import os
+from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, ".env"))
 
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    AUTH_USERNAME = os.environ.get("AUTH_USERNAME")
+    AUTH_PASSWORD_HASH = os.environ.get("AUTH_PASSWORD_HASH")
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URL", f"sqlite:///{os.path.join(basedir, 'plants.db')}"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
+    SESSION_COOKIE_SECURE = os.environ.get(
+        "SESSION_COOKIE_SECURE", "false"
+    ).lower() == "true"
 
     # Flask-Mail settings
     MAIL_SERVER = os.environ.get("MAIL_SERVER", "smtp.gmail.com")

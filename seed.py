@@ -126,6 +126,28 @@ COMMON_SPECIES = [
         "fertilizer_notes": "Heavy feeder that rewards generous fertilizing. Use slow-release granules at planting, then liquid monthly. Phosphorus encourages blooms.",
     },
     {
+        "name": "Money Plant",
+        "watering_interval_days": 7,
+        "sunlight": "Bright indirect light; tolerates medium indirect light",
+        "soil_type": "Well-draining peat-based potting mix with perlite",
+        "common_issues": "Yellow leaves (overwatering), leaf drop (cold drafts or low light), brown tips (low humidity or inconsistent watering)",
+        "care_tips": "Let the top 1-2 inches of soil dry before watering. Rotate regularly for even growth and keep away from cold drafts. Prune to maintain a compact shape.",
+        "fertilizer_type": "Balanced liquid houseplant fertilizer (10-10-10 or 20-20-20)",
+        "fertilizer_schedule": "Every 4-6 weeks during spring and summer",
+        "fertilizer_notes": "Dilute to half strength. Do not fertilize in fall and winter, and avoid feeding a stressed or recently repotted plant.",
+    },
+    {
+        "name": "ZZ Plant",
+        "watering_interval_days": 14,
+        "sunlight": "Low to bright indirect light; avoids harsh direct sun",
+        "soil_type": "Fast-draining cactus or succulent mix with perlite",
+        "common_issues": "Yellow leaves (overwatering), wrinkled stems (underwatering), leggy growth (insufficient light), root rot",
+        "care_tips": "Extremely drought-tolerant. Let soil dry completely between waterings and use a pot with drainage. Wipe glossy leaves occasionally to remove dust.",
+        "fertilizer_type": "Balanced liquid houseplant fertilizer (10-10-10 or 20-20-20)",
+        "fertilizer_schedule": "Once every 2-3 months during spring and summer",
+        "fertilizer_notes": "Very light feeder. Dilute to half strength and skip fertilizer entirely in fall and winter. Too much fertilizer can damage the rhizomes.",
+    },
+    {
         "name": "Rubber Plant",
         "watering_interval_days": 10,
         "sunlight": "Medium to bright indirect light",
@@ -200,6 +222,18 @@ SPECIES_ISSUES = {
         ("Bud drop before opening", "Keep watering consistent — stress from drought or overwatering causes buds to abort. Avoid moving the plant"),
         ("Aphids/whiteflies on new growth", "Spray with insecticidal soap or neem oil. Blast with water hose to dislodge. Treat weekly until clear"),
         ("No new growth in spring", "Be patient — perennial hibiscus emerges very late (May-June). Don't dig up assuming it's dead"),
+    ],
+    "Money Plant": [
+        ("Yellowing leaves", "Let the top 1-2 inches of soil dry before watering and make sure the pot drains freely"),
+        ("Leaves dropping", "Move away from cold drafts and provide brighter indirect light. Avoid sudden changes in watering"),
+        ("Brown leaf tips", "Increase humidity and water consistently. Use filtered water if mineral buildup is suspected"),
+        ("Soft trunk or stems", "Check for root rot from overwatering. Remove damaged roots and repot into fresh, well-draining soil"),
+    ],
+    "ZZ Plant": [
+        ("Yellowing leaves", "Reduce watering and let the soil dry completely. Check that the pot has drainage and inspect roots for rot"),
+        ("Wrinkled or shriveled stems", "Water thoroughly, then return to allowing the soil to dry completely between waterings"),
+        ("Leggy, sparse growth", "Move to brighter indirect light and rotate the pot regularly for even growth"),
+        ("Soft, mushy rhizomes", "Remove the plant from wet soil, trim rotted roots and rhizomes, and repot in a dry, fast-draining mix"),
     ],
 }
 
