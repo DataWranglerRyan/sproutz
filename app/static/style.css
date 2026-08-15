@@ -101,6 +101,23 @@ nav a:hover {
     color: var(--moss);
 }
 
+@media (max-width: 560px) {
+    nav {
+        gap: 1.1rem;
+    }
+
+    .nav-label {
+        display: none;
+    }
+
+    .nav-icon-img {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0;
+        vertical-align: middle;
+    }
+}
+
 .login-page {
     display: grid;
     min-height: 100vh;
