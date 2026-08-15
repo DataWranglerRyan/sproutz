@@ -28,11 +28,6 @@ class Config:
         "SESSION_COOKIE_SECURE", "false"
     ).lower() == "true"
 
-    # Flask-Mail settings
-    MAIL_SERVER = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
-    MAIL_PORT = int(os.environ.get("MAIL_PORT", 587))
-    MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
-    REMINDER_EMAIL = os.environ.get("REMINDER_EMAIL")
+    # ntfy.sh push notification settings
+    NTFY_TOPIC = os.environ.get("NTFY_TOPIC")
+    NTFY_SERVER = os.environ.get("NTFY_SERVER", "https://ntfy.sh")
