@@ -10,8 +10,16 @@ main = Blueprint("main", __name__)
 
 @main.before_request
 def require_login():
+    if request.endpoint == "main.health":
+        return
     if not current_user.is_authenticated:
         return redirect(url_for("auth.login", next=request.full_path))
+
+
+@main.route("/health")
+def health():
+    """Lightweight, unauthenticated endpoint for uptime pingers to keep the app awake."""
+    return "OK", 200
 
 
 @main.route("/")
