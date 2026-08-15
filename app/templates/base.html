@@ -16,9 +16,9 @@
 <body>
     <nav>
         <img src="{{ url_for('static', filename='icons/sproutz-icon.png') }}" alt="Sproutz" class="app-nav-icon">
-        <a href="{{ url_for('main.dashboard') }}"><i class="bi bi-calendar3"></i> Dashboard</a>
-        <a href="{{ url_for('main.index') }}"><i class="bi bi-flower2"></i> My Plants</a>
-        <a href="{{ url_for('main.manage_species') }}"><i class="bi bi-tree"></i> Species</a>
+        <a href="{{ url_for('main.dashboard') }}"><img src="{{ url_for('static', filename='icons/dashboard-icon.png') }}" alt="" class="nav-icon-img"> Dashboard</a>
+        <a href="{{ url_for('main.index') }}"><img src="{{ url_for('static', filename='icons/my-plants-icon.png') }}" alt="" class="nav-icon-img"> My Plants</a>
+        <a href="{{ url_for('main.manage_species') }}"><img src="{{ url_for('static', filename='icons/species-icon.png') }}" alt="" class="nav-icon-img"> Species</a>
         <form method="POST" action="{{ url_for('auth.logout') }}" class="nav-logout">
             <button type="submit" aria-label="Sign out" title="Sign out"><i class="bi bi-box-arrow-right"></i></button>
         </form>

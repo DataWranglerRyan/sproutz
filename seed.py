@@ -1,7 +1,14 @@
 """Seed the database with common houseplant species and care tips."""
 
 from app import create_app, db
-from app.models import Species, SpeciesIssue
+from app.models import Plant, Species, SpeciesIssue
+
+MY_PLANTS = [
+    {"name": "Dining Room Succulent", "location": "Dining Room", "species": "Succulent"},
+    {"name": "Entryway Succulent", "location": "Entryway", "species": "Succulent"},
+    {"name": "Backyard Canna Lily", "location": "Backyard", "species": "Canna Lily"},
+    {"name": "Bedroom Rubber Plant", "location": "Bedroom", "species": "Rubber Plant"},
+]
 
 COMMON_SPECIES = [
     {
@@ -264,3 +271,18 @@ with app.app_context():
                 db.session.add(SpeciesIssue(species_id=species.id, issue=issue, solution=solution))
     db.session.commit()
     print(f"Seeded/updated {len(COMMON_SPECIES)} species with care tips and issue/solution pairs.")
+
+    # Seed my plants (no watering history — just the plant records)
+    plants_added = 0
+    for data in MY_PLANTS:
+        existing = Plant.query.filter_by(name=data["name"]).first()
+        if existing:
+            continue
+        species = Species.query.filter_by(name=data["species"]).first()
+        if not species:
+            print(f"Skipping {data['name']!r}: species {data['species']!r} not found.")
+            continue
+        db.session.add(Plant(name=data["name"], location=data["location"], species_id=species.id))
+        plants_added += 1
+    db.session.commit()
+    print(f"Seeded {plants_added} new plant(s).")

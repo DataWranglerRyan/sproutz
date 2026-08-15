@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1><i class="bi bi-calendar3"></i> Dashboard</h1>
+<h1><img src="{{ url_for('static', filename='icons/dashboard-icon.png') }}" alt="" class="page-icon-img"> Dashboard</h1>
 
 {% if all_plants %}
 <form class="dashboard-filter" method="GET">

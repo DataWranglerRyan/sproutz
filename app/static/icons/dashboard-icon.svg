@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title>Garden calendar</title>
+  <defs>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a3b8a3"/>
+      <stop offset="1" stop-color="#7d9880"/>
+    </linearGradient>
+  </defs>
+
+  <!-- calendar body -->
+  <rect x="96" y="128" width="320" height="272" rx="28" fill="none" stroke="#6b8570" stroke-width="14"/>
+
+  <!-- header band -->
+  <path d="M96 156a28 28 0 0 1 28-28h264a28 28 0 0 1 28 28v40H96Z" fill="url(#leaf)" stroke="#6b8570" stroke-width="14"/>
+
+  <!-- hanging rings -->
+  <rect x="152" y="96" width="24" height="56" rx="12" fill="none" stroke="#6b8570" stroke-width="12"/>
+  <rect x="336" y="96" width="24" height="56" rx="12" fill="none" stroke="#6b8570" stroke-width="12"/>
+
+  <!-- day grid -->
+  <circle cx="152" cy="238" r="12" fill="#e3e8de"/>
+  <circle cx="212" cy="238" r="12" fill="#e3e8de"/>
+  <circle cx="272" cy="238" r="12" fill="#e3e8de"/>
+  <circle cx="332" cy="238" r="12" fill="#e3e8de"/>
+
+  <circle cx="152" cy="290" r="12" fill="#e3e8de"/>
+  <circle cx="212" cy="290" r="12" fill="#e3e8de"/>
+  <circle cx="332" cy="290" r="12" fill="#e3e8de"/>
+
+  <circle cx="152" cy="342" r="12" fill="#e3e8de"/>
+  <circle cx="212" cy="342" r="12" fill="#e3e8de"/>
+  <circle cx="272" cy="342" r="12" fill="#e3e8de"/>
+
+  <!-- highlighted watering day -->
+  <circle cx="272" cy="290" r="20" fill="url(#leaf)" stroke="#6b8570" stroke-width="6"/>
+</svg>
