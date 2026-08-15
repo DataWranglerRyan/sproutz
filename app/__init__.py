@@ -34,6 +34,16 @@ def ensure_runtime_schema(app):
     db.session.commit()
 
 
+def ensure_postgres_schema(app):
+    """Create Sproutz's isolated PostgreSQL schema before creating tables."""
+    db_uri = app.config.get("SQLALCHEMY_DATABASE_URI", "")
+    if not db_uri.startswith("postgresql+psycopg://"):
+        return
+
+    db.session.execute(text("CREATE SCHEMA IF NOT EXISTS sproutz"))
+    db.session.commit()
+
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object("config.Config")
@@ -59,6 +69,7 @@ def create_app():
     app.register_blueprint(main)
 
     with app.app_context():
+        ensure_postgres_schema(app)
         db.create_all()
         ensure_runtime_schema(app)
 

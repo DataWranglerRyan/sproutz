@@ -16,11 +16,18 @@ def get_database_uri():
     return database_uri
 
 
+def get_engine_options():
+    if get_database_uri().startswith("postgresql+psycopg://"):
+        return {"connect_args": {"options": "-csearch_path=sproutz"}}
+    return {}
+
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
     AUTH_USERNAME = os.environ.get("AUTH_USERNAME")
     AUTH_PASSWORD_HASH = os.environ.get("AUTH_PASSWORD_HASH")
     SQLALCHEMY_DATABASE_URI = get_database_uri()
+    SQLALCHEMY_ENGINE_OPTIONS = get_engine_options()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
