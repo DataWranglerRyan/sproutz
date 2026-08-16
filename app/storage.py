@@ -55,6 +55,9 @@ def upload_plant_photo(plant_id, photo_file):
             content_settings=ContentSettings(content_type=content_type),
         )
     except AzureError as error:
+        current_app.logger.exception(
+            "Azure Blob upload failed for plant %s.", plant_id
+        )
         raise PlantPhotoError("Unable to upload the photo. Please try again.") from error
     return blob_name
 
