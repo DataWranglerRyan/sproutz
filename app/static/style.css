@@ -1542,6 +1542,42 @@ body:has(.species-detail-page) .container {
     font-size: 0.8rem;
 }
 
+.photo-upload-input-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.photo-upload-input {
+    min-width: 0;
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.photo-remove-form {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.photo-remove-button {
+    display: grid;
+    width: calc(1.2em + 1.5rem + 2px);
+    height: calc(1.2em + 1.5rem + 2px);
+    place-items: center;
+    border: 1px solid var(--pebble);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--stone-light);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.photo-remove-button:hover {
+    border-color: var(--alert);
+    background: var(--alert-light);
+    color: var(--alert);
+}
+
 @keyframes slideUp {
     from { transform: translateY(100%); }
     to { transform: translateY(0); }

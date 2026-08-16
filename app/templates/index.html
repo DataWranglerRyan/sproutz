@@ -89,7 +89,7 @@
                 <button type="button" class="plant-card-secondary-action" onclick='closePlantActionMenus(); openSnoozeModal({{ plant.id }}, {{ plant.name|tojson }})'>
                     <i class="bi bi-moon-stars"></i> Snooze
                 </button>
-                <button type="button" class="plant-card-secondary-action" onclick='openPhotoUploadModal({{ plant.id }}, {{ plant.name|tojson }})'>
+                <button type="button" class="plant-card-secondary-action" onclick='openPhotoUploadModal({{ plant.id }}, {{ plant.name|tojson }}, {{ (plant.photo_blob_name is not none)|tojson }})'>
                     <i class="bi bi-camera"></i> Add or change photo
                 </button>
                 <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}">
@@ -170,12 +170,19 @@
             <button class="modal-close" type="button" onclick="closePhotoUploadModal()">&times;</button>
         </div>
         <div class="modal-body">
-            <form method="POST" id="photo-upload-form" enctype="multipart/form-data">
-                <label for="plant-photo">Photo:</label>
-                <input type="file" id="plant-photo" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment" required>
-                <p class="photo-upload-help">JPEG, PNG, or WebP. Maximum size: 5 MB.</p>
-                <button type="submit" class="btn" style="width: 100%;">Save photo</button>
-            </form>
+            <div class="photo-upload-input-row">
+                <form method="POST" id="photo-upload-form" class="photo-upload-input" enctype="multipart/form-data">
+                        <label for="plant-photo">Photo:</label>
+                        <input type="file" id="plant-photo" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment" required>
+                </form>
+                <form method="POST" id="photo-delete-form" class="photo-remove-form" hidden>
+                    <button type="submit" class="photo-remove-button" aria-label="Remove photo" title="Remove photo">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </div>
+            <p class="photo-upload-help">JPEG, PNG, or WebP. Maximum size: 5 MB.</p>
+            <button type="submit" form="photo-upload-form" class="btn" style="width: 100%;">Save photo</button>
         </div>
     </div>
 </div>
@@ -222,12 +229,15 @@ function togglePlantActions(button) {
     }
 }
 
-function openPhotoUploadModal(plantId, plantName) {
+function openPhotoUploadModal(plantId, plantName, hasPhoto) {
     closePlantActionMenus();
     const modal = document.getElementById('photo-upload-modal');
     const form = document.getElementById('photo-upload-form');
+    const deleteForm = document.getElementById('photo-delete-form');
     const title = document.getElementById('photo-upload-title');
     form.action = '/plants/' + plantId + '/photo';
+    deleteForm.action = '/plants/' + plantId + '/photo/delete';
+    deleteForm.hidden = !hasPhoto;
     form.reset();
     title.textContent = 'Photo for ' + plantName;
     modal.classList.add('active');
