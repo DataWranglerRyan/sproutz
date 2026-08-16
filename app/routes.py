@@ -204,6 +204,25 @@ def plant_photo(plant_id):
     return response
 
 
+@main.route("/plants/<int:plant_id>/photo/delete", methods=["POST"])
+def delete_plant_photo_route(plant_id):
+    plant = Plant.query.get_or_404(plant_id)
+    if not plant.photo_blob_name:
+        flash(f"{plant.name} does not have a photo to remove.", "info")
+        return redirect(request.referrer or url_for("main.index"))
+
+    try:
+        delete_plant_photo(plant.photo_blob_name)
+    except PlantPhotoError as error:
+        flash(str(error), "info")
+        return redirect(request.referrer or url_for("main.index"))
+
+    plant.photo_blob_name = None
+    db.session.commit()
+    flash(f"Removed {plant.name}'s photo.", "success")
+    return redirect(request.referrer or url_for("main.index"))
+
+
 @main.route("/plants/<int:plant_id>/snooze", methods=["POST"])
 def snooze_plant(plant_id):
     plant = Plant.query.get_or_404(plant_id)
