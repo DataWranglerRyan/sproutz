@@ -120,9 +120,10 @@ nav a:hover {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 44px;
-        min-height: 44px;
-        border-radius: 10px;
+        min-width: 52px;
+        min-height: 52px;
+        padding: 0.5rem;
+        border-radius: 12px;
     }
 
     nav a:active {
@@ -130,8 +131,8 @@ nav a:hover {
     }
 
     .nav-icon-img {
-        width: 1.75rem;
-        height: 1.75rem;
+        width: 2rem;
+        height: 2rem;
         margin-right: 0;
         vertical-align: middle;
     }
@@ -140,10 +141,11 @@ nav a:hover {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 44px;
-        min-height: 44px;
-        font-size: 1.15rem;
-        border-radius: 10px;
+        min-width: 52px;
+        min-height: 52px;
+        padding: 0.5rem;
+        font-size: 1.25rem;
+        border-radius: 12px;
     }
 }
 
@@ -293,6 +295,36 @@ h2 {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.timeline-plant-thumb,
+.modal-plant-thumb {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--pebble);
+    background: var(--sand-warm);
+    flex: 0 0 auto;
+}
+
+.timeline-plant-thumb {
+    margin-right: 0.6rem;
+}
+
+.modal-plant-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.35rem;
+}
+
+.modal-plant-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
 }
 
 .plant-card-header {

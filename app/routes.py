@@ -3,7 +3,14 @@ from flask_login import current_user
 from datetime import datetime, timedelta
 
 from app import db
-from app.models import Plant, Species, SpeciesIssue, WateringEvent
+from app.models import (
+    CENTRAL_TZ,
+    Plant,
+    Species,
+    SpeciesIssue,
+    WateringEvent,
+    to_central,
+)
 from app.storage import (
     PlantPhotoError,
     delete_plant_photo,
@@ -345,7 +352,7 @@ def dashboard():
         None,
     )
     plants = [selected_plant] if selected_plant else available_plants
-    today = datetime.utcnow().date()
+    today = datetime.now(CENTRAL_TZ).date()
     tomorrow = today + timedelta(days=1)
     next_up = {"today": [], "tomorrow": []}
 
@@ -369,6 +376,7 @@ def dashboard():
     watering_dates = {}
 
     for plant in plants:
+        photo_url = url_for("main.plant_photo", plant_id=plant.id) if plant.photo_blob_name else None
         active_events = [event for event in plant.watering_events if not event.is_reverted]
         latest_event = max(
             active_events,
@@ -379,15 +387,16 @@ def dashboard():
             if event.is_reverted:
                 continue
             timeline_events.append({
-                "date": event.watered_at.date(),
+                "date": to_central(event.watered_at).date(),
                 "plant_id": plant.id,
                 "plant_name": plant.name,
                 "species_name": plant.species.name,
+                "photo_url": photo_url,
                 "type": "watered",
                 "undoable": event is latest_event and event.previous_last_watered is not None,
             })
 
-        next_date = plant.next_watering.date()
+        next_date = to_central(plant.next_watering).date()
         if next_date <= today:
             next_up["today"].append(plant)
         elif next_date == tomorrow:
@@ -398,6 +407,7 @@ def dashboard():
             "plant_id": plant.id,
             "plant_name": plant.name,
             "species_name": plant.species.name,
+            "photo_url": photo_url,
             "type": event_type,
         })
 
@@ -407,6 +417,7 @@ def dashboard():
             "id": plant.id,
             "name": plant.name,
             "species": plant.species.name,
+            "photo_url": photo_url,
             "overdue": next_date <= today,
             "undoable": latest_event is not None and latest_event.previous_last_watered is not None,
         })
