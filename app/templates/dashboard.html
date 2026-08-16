@@ -130,9 +130,9 @@
     <div class="timeline-day {{ 'today' if date == today else '' }}">
         <div class="timeline-date">
             {% if date == today %}
-                <strong>Today</strong> — {{ date.strftime('%b %d, %Y') }}
+                <strong>Today</strong> — {{ date|central_time('%b %d, %Y') }}
             {% else %}
-                {{ date.strftime('%a, %b %d') }}
+                {{ date|central_time('%a, %b %d') }}
             {% endif %}
             {% if date < today %}
                 <span class="timeline-label past">Past</span>
@@ -151,6 +151,9 @@
                     {% else %}<i class="bi bi-calendar-check"></i>
                     {% endif %}
                 </span>
+                {% if event.photo_url %}
+                <img class="timeline-plant-thumb" src="{{ event.photo_url }}" alt="{{ event.plant_name }} photo">
+                {% endif %}
                 <div class="timeline-event-details">
                     <span class="timeline-plant-name">{{ event.plant_name }}</span>
                     <span class="timeline-species">{{ event.species_name }}</span>
@@ -236,6 +239,9 @@ function openWateringModal(cell) {
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
         html += '<li class="modal-plant-item ' + (plant.overdue ? 'overdue' : '') + '">';
+        if (plant.photo_url) {
+            html += '<img class="modal-plant-thumb" src="' + plant.photo_url + '" alt="' + safePlantName + ' photo">';
+        }
         html += '<div class="modal-plant-info">';
         html += '<span class="modal-plant-name">' + plant.name + '</span>';
         html += '<span class="modal-plant-species">' + plant.species + '</span>';

@@ -65,7 +65,7 @@
             {% endif %}
         </div>
         <div class="plant-card-details">
-            <span><i class="bi bi-clock-history"></i> Last watered {{ plant.last_watered.strftime('%b %d') }}</span>
+            <span><i class="bi bi-clock-history"></i> Last watered {{ plant.last_watered|central_time('%b %d') }}</span>
         </div>
         <div class="plant-card-actions">
             <form method="POST" action="{{ url_for('main.water_plant', plant_id=plant.id) }}">

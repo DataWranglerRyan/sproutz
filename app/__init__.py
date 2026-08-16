@@ -68,6 +68,15 @@ def create_app():
             + ". Copy .env.example to .env and configure the values."
         )
 
+    def format_central_time(value, fmt):
+        if value is None:
+            return ""
+        from app.models import to_central
+
+        return to_central(value).strftime(fmt)
+
+    app.jinja_env.filters["central_time"] = format_central_time
+
     db.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"

@@ -1,6 +1,23 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 from app import db
+
+CENTRAL_TZ = ZoneInfo("America/Chicago")
+
+
+def to_central(dt):
+    if dt is None:
+        return None
+    if isinstance(dt, date) and not isinstance(dt, datetime):
+        return datetime.combine(dt, datetime.min.time(), tzinfo=timezone.utc).astimezone(CENTRAL_TZ)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(CENTRAL_TZ)
+
+
+def central_now():
+    return datetime.now(CENTRAL_TZ)
 
 
 class Species(db.Model):
@@ -58,19 +75,20 @@ class Plant(db.Model):
 
     @property
     def is_overdue(self):
-        return datetime.utcnow() >= self.next_watering
+        return central_now() >= to_central(self.next_watering)
 
     @property
     def days_until_watering(self):
-        delta = self.next_watering - datetime.utcnow()
-        return delta.days
+        next_watering_in_central = to_central(self.next_watering).date()
+        today_in_central = central_now().date()
+        return (next_watering_in_central - today_in_central).days
 
     def water(self):
-        self.last_watered = datetime.utcnow()
+        self.last_watered = datetime.now(timezone.utc).replace(tzinfo=None)
         self.snoozed_until = None
 
     def snooze(self, days):
-        anchor = max(self.next_watering, datetime.utcnow())
+        anchor = max(self.next_watering, datetime.now(timezone.utc).replace(tzinfo=None))
         self.snoozed_until = anchor + timedelta(days=days)
 
     def __repr__(self):
