@@ -1360,6 +1360,17 @@ body:has(.species-detail-page) .container {
     flex-shrink: 0;
 }
 
+.timeline-water-form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.timeline-water-form .btn.water {
+    margin-top: 0;
+    padding: 0.42rem 0.58rem;
+    font-size: 0.74rem;
+}
+
 .timeline-undo-form .btn.undo {
     margin-top: 0;
     padding: 0.42rem 0.58rem;

@@ -155,12 +155,13 @@
                     <span class="timeline-plant-name">{{ event.plant_name }}</span>
                     <span class="timeline-species">{{ event.species_name }}</span>
                 </div>
-                <span class="timeline-type-badge {{ event.type }}">
-                    {% if event.type == 'watered' %}Watered
-                    {% elif event.type == 'overdue' %}Needs water!
-                    {% else %}Scheduled
-                    {% endif %}
-                </span>
+                {% if event.type == 'upcoming' %}
+                <form method="POST" action="{{ url_for('main.water_plant', plant_id=event.plant_id) }}" class="timeline-water-form">
+                    <button type="submit" class="btn water" aria-label="Water {{ event.plant_name }}" title="Water {{ event.plant_name }}">
+                        <i class="bi bi-droplet-fill"></i>
+                    </button>
+                </form>
+                {% endif %}
                 {% if event.type == 'watered' and event.undoable %}
                 <form method="POST" action="{{ url_for('main.undo_water_plant', plant_id=event.plant_id) }}" class="timeline-undo-form">
                     <button type="submit" class="btn undo" aria-label="Undo last watering for {{ event.plant_name }}" title="Undo last watering">
@@ -168,6 +169,12 @@
                     </button>
                 </form>
                 {% endif %}
+                <span class="timeline-type-badge {{ event.type }}">
+                    {% if event.type == 'watered' %}Watered
+                    {% elif event.type == 'overdue' %}Needs water!
+                    {% else %}Scheduled
+                    {% endif %}
+                </span>
             </div>
             {% endfor %}
         </div>

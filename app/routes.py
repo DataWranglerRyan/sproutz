@@ -110,7 +110,7 @@ def water_plant(plant_id):
     db.session.add(event)
     db.session.commit()
     flash(f"Watered {plant.name}!", "success")
-    return redirect(url_for("main.index"))
+    return redirect(request.referrer or url_for("main.index"))
 
 
 @main.route("/plants/<int:plant_id>/water/undo", methods=["POST"])
@@ -344,6 +344,7 @@ def dashboard():
         event_type = "overdue" if next_date <= today else "upcoming"
         timeline_events.append({
             "date": next_date,
+            "plant_id": plant.id,
             "plant_name": plant.name,
             "species_name": plant.species.name,
             "type": event_type,
