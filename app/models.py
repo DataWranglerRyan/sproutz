@@ -47,6 +47,7 @@ class Plant(db.Model):
     last_watered = db.Column(db.DateTime, default=datetime.utcnow)
     snoozed_until = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    photo_blob_name = db.Column(db.String(255), nullable=True)
 
     @property
     def next_watering(self):

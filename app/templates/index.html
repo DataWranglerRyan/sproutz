@@ -39,42 +39,66 @@
         <div class="plant-card-header">
             <div>
                 <div class="plant-card-name-row">
-                    <div class="plant-card-name">{{ plant.name }}</div>
-                    <button type="button" class="plant-info-btn" data-species-name="{{ plant.species.name }}" aria-label="View {{ plant.species.name }} care information" title="View care information" onclick="openSpeciesInfoModal({{ plant.id }}, this)">
-                        <i class="bi bi-info-circle"></i>
+                    {% if plant.photo_blob_name %}
+                    <button type="button" class="plant-photo-thumbnail" onclick="openPlantPhotoModal(this)" data-photo-url="{{ url_for('main.plant_photo', plant_id=plant.id) }}" data-plant-name="{{ plant.name }}">
+                        <img src="{{ url_for('main.plant_photo', plant_id=plant.id) }}" alt="Photo of {{ plant.name }}">
                     </button>
+                    {% endif %}
+                    <div class="plant-card-name">{{ plant.name }}</div>
                 </div>
                 <div class="plant-card-species">
                     {{ plant.species.name }}{% if plant.location %} · {{ plant.location }}{% endif %}
                 </div>
             </div>
             {% if plant.is_overdue %}
-                <span class="badge overdue">Overdue!</span>
+                {% if plant.days_until_watering == 0 %}
+                <span class="badge due-today"><i class="bi bi-droplet"></i> Water today</span>
+                {% else %}
+                <span class="badge overdue"><i class="bi bi-exclamation-triangle"></i> Overdue by {{ -plant.days_until_watering }}d</span>
+                {% endif %}
             {% else %}
-                <span class="badge ok">{{ plant.days_until_watering }}d left</span>
+                {% if plant.days_until_watering == 0 %}
+                <span class="badge due-today"><i class="bi bi-droplet"></i> Water today</span>
+                {% else %}
+                <span class="badge ok"><i class="bi bi-droplet"></i> Water in {{ plant.days_until_watering }}d</span>
+                {% endif %}
             {% endif %}
         </div>
         <div class="plant-card-details">
-            <span>Last: {{ plant.last_watered.strftime('%b %d') }}</span>
-            <span>Next: {{ plant.next_watering.strftime('%b %d') }}</span>
+            <span><i class="bi bi-clock-history"></i> Last watered {{ plant.last_watered.strftime('%b %d') }}</span>
         </div>
         <div class="plant-card-actions">
             <form method="POST" action="{{ url_for('main.water_plant', plant_id=plant.id) }}">
-                <button type="submit" class="btn water" aria-label="Water {{ plant.name }}" title="Water {{ plant.name }}"><i class="bi bi-droplet-fill"></i></button>
+                <button type="submit" class="btn water" aria-label="Water {{ plant.name }}"><i class="bi bi-droplet-fill"></i> Water now</button>
             </form>
-            {% if plant.id in undoable_plant_ids %}
-            <form method="POST" action="{{ url_for('main.undo_water_plant', plant_id=plant.id) }}" class="undo-form">
-                <button type="submit" class="btn undo" aria-label="Undo last watering" title="Undo last watering">
-                    <i class="bi bi-arrow-counterclockwise"></i>
+            <div class="plant-card-more">
+                <button type="button" class="btn plant-card-more-toggle" aria-label="More actions for {{ plant.name }}" aria-expanded="false" onclick="togglePlantActions(this)">
+                    <i class="bi bi-three-dots-vertical"></i>
                 </button>
-            </form>
-            {% endif %}
-            <button type="button" class="btn snooze snooze-btn" aria-label="Snooze watering" title="Snooze watering" onclick='openSnoozeModal({{ plant.id }}, {{ plant.name|tojson }})'>
-                <i class="bi bi-moon-stars"></i>
-            </button>
-            <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}" class="delete-form">
-                <button type="submit" class="btn delete"><i class="bi bi-trash"></i></button>
-            </form>
+                <div class="plant-card-more-menu">
+                {% if plant.id in undoable_plant_ids %}
+                <form method="POST" action="{{ url_for('main.undo_water_plant', plant_id=plant.id) }}" class="undo-form">
+                    <button type="submit" class="plant-card-secondary-action">
+                        <i class="bi bi-arrow-counterclockwise"></i> Undo watering
+                    </button>
+                </form>
+                {% endif %}
+                <button type="button" class="plant-card-secondary-action" data-species-name="{{ plant.species.name }}" onclick="closePlantActionMenus(); openSpeciesInfoModal({{ plant.id }}, this)">
+                    <i class="bi bi-info-circle"></i> Care info
+                </button>
+                <button type="button" class="plant-card-secondary-action" onclick='closePlantActionMenus(); openSnoozeModal({{ plant.id }}, {{ plant.name|tojson }})'>
+                    <i class="bi bi-moon-stars"></i> Snooze
+                </button>
+                <button type="button" class="plant-card-secondary-action" onclick='openPhotoUploadModal({{ plant.id }}, {{ plant.name|tojson }})'>
+                    <i class="bi bi-camera"></i> Add or change photo
+                </button>
+                <form method="POST" action="{{ url_for('main.delete_plant', plant_id=plant.id) }}">
+                    <button type="submit" class="plant-card-secondary-action delete-action">
+                        <i class="bi bi-trash"></i> Delete plant
+                    </button>
+                </form>
+                </div>
+            </div>
         </div>
         <template id="species-care-{{ plant.id }}">
             {% with species=plant.species %}
@@ -111,7 +135,7 @@
         </div>
         <div class="modal-body">
             {% if species %}
-            <form method="POST" action="{{ url_for('main.add_plant') }}">
+            <form method="POST" action="{{ url_for('main.add_plant') }}" enctype="multipart/form-data">
                 <label for="modal-plant-name">Plant Name:</label>
                 <input type="text" id="modal-plant-name" name="name" placeholder="Optional (auto: Location + Species)">
 
@@ -126,12 +150,44 @@
                     {% endfor %}
                 </select>
 
+                <label for="modal-plant-photo">Photo:</label>
+                <input type="file" id="modal-plant-photo" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment">
+
                 <button type="submit" class="btn" style="width: 100%;">Add Plant</button>
             </form>
             {% else %}
             <p>No species defined yet. <a href="{{ url_for('main.manage_species') }}">Add a species first</a>.</p>
             {% endif %}
         </div>
+    </div>
+</div>
+
+<!-- Photo Upload Modal -->
+<div class="modal-overlay" id="photo-upload-modal" onclick="closePhotoUploadModal(event)">
+    <div class="modal-sheet form-modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="photo-upload-title">Add plant photo</h3>
+            <button class="modal-close" type="button" onclick="closePhotoUploadModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="photo-upload-form" enctype="multipart/form-data">
+                <label for="plant-photo">Photo:</label>
+                <input type="file" id="plant-photo" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment" required>
+                <p class="photo-upload-help">JPEG, PNG, or WebP. Maximum size: 5 MB.</p>
+                <button type="submit" class="btn" style="width: 100%;">Save photo</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Full Photo Viewer -->
+<div class="modal-overlay" id="plant-photo-modal" onclick="closePlantPhotoModal(event)">
+    <div class="modal-sheet photo-viewer-sheet" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="plant-photo-title">Plant photo</h3>
+            <button class="modal-close" type="button" onclick="closePlantPhotoModal()">&times;</button>
+        </div>
+        <img id="plant-photo-full-size" class="plant-photo-full-size" alt="">
     </div>
 </div>
 
@@ -148,6 +204,65 @@ function closeAddPlantModal(event) {
     document.getElementById('add-plant-modal').classList.remove('active');
     document.body.style.overflow = '';
 }
+
+function closePlantActionMenus() {
+    document.querySelectorAll('.plant-card-more.open').forEach(function(menu) {
+        menu.classList.remove('open');
+        menu.querySelector('.plant-card-more-toggle').setAttribute('aria-expanded', 'false');
+    });
+}
+
+function togglePlantActions(button) {
+    const menu = button.closest('.plant-card-more');
+    const willOpen = !menu.classList.contains('open');
+    closePlantActionMenus();
+    if (willOpen) {
+        menu.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
+    }
+}
+
+function openPhotoUploadModal(plantId, plantName) {
+    closePlantActionMenus();
+    const modal = document.getElementById('photo-upload-modal');
+    const form = document.getElementById('photo-upload-form');
+    const title = document.getElementById('photo-upload-title');
+    form.action = '/plants/' + plantId + '/photo';
+    form.reset();
+    title.textContent = 'Photo for ' + plantName;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePhotoUploadModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('photo-upload-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function openPlantPhotoModal(thumbnail) {
+    const modal = document.getElementById('plant-photo-modal');
+    const image = document.getElementById('plant-photo-full-size');
+    const title = document.getElementById('plant-photo-title');
+    image.src = thumbnail.dataset.photoUrl;
+    image.alt = 'Photo of ' + thumbnail.dataset.plantName;
+    title.textContent = thumbnail.dataset.plantName;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePlantPhotoModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById('plant-photo-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.plant-card-more')) {
+        closePlantActionMenus();
+    }
+});
 
 function openSpeciesInfoModal(plantId, button) {
     const template = document.getElementById('species-care-' + plantId);

@@ -34,7 +34,16 @@ class Config:
     SESSION_COOKIE_SECURE = os.environ.get(
         "SESSION_COOKIE_SECURE", "false"
     ).lower() == "true"
+    MAX_CONTENT_LENGTH = 5 * 1024 * 1024
 
     # ntfy.sh push notification settings
     NTFY_TOPIC = os.environ.get("NTFY_TOPIC")
     NTFY_SERVER = os.environ.get("NTFY_SERVER", "https://ntfy.sh")
+
+    # Azure Blob Storage settings for private plant photos
+    AZURE_STORAGE_CONNECTION_STRING = os.environ.get(
+        "AZURE_STORAGE_CONNECTION_STRING"
+    )
+    AZURE_STORAGE_CONTAINER = os.environ.get(
+        "AZURE_STORAGE_CONTAINER", "plant-images"
+    )

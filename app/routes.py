@@ -1,9 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, Response, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from datetime import datetime, timedelta
 
 from app import db
 from app.models import Plant, Species, SpeciesIssue, WateringEvent
+from app.storage import (
+    PlantPhotoError,
+    delete_plant_photo,
+    download_plant_photo,
+    upload_plant_photo,
+)
 
 main = Blueprint("main", __name__)
 
@@ -88,6 +94,17 @@ def add_plant():
         plant_name = name or f"{location} {species.name}"
         plant = Plant(name=plant_name, location=location, species_id=species.id)
         db.session.add(plant)
+        db.session.flush()
+
+        photo = request.files.get("photo")
+        if photo and photo.filename:
+            try:
+                plant.photo_blob_name = upload_plant_photo(plant.id, photo)
+            except PlantPhotoError as error:
+                db.session.rollback()
+                flash(str(error), "info")
+                return redirect(request.referrer or url_for("main.add_plant"))
+
         db.session.commit()
         flash(f"Added {plant_name}!", "success")
         return redirect(url_for("main.index"))
@@ -140,10 +157,44 @@ def undo_water_plant(plant_id):
 @main.route("/plants/<int:plant_id>/delete", methods=["POST"])
 def delete_plant(plant_id):
     plant = Plant.query.get_or_404(plant_id)
+    if plant.photo_blob_name:
+        try:
+            delete_plant_photo(plant.photo_blob_name)
+        except PlantPhotoError as error:
+            flash(str(error), "info")
+            return redirect(request.referrer or url_for("main.index"))
     db.session.delete(plant)
     db.session.commit()
     flash(f"Removed {plant.name}.", "info")
     return redirect(url_for("main.index"))
+
+
+@main.route("/plants/<int:plant_id>/photo", methods=["GET", "POST"])
+def plant_photo(plant_id):
+    plant = Plant.query.get_or_404(plant_id)
+    if request.method == "POST":
+        try:
+            plant.photo_blob_name = upload_plant_photo(
+                plant.id, request.files.get("photo")
+            )
+        except PlantPhotoError as error:
+            flash(str(error), "info")
+            return redirect(request.referrer or url_for("main.index"))
+
+        db.session.commit()
+        flash(f"Updated {plant.name}'s photo.", "success")
+        return redirect(request.referrer or url_for("main.index"))
+
+    if not plant.photo_blob_name:
+        return "Photo not found.", 404
+    try:
+        photo, content_type = download_plant_photo(plant.photo_blob_name)
+    except PlantPhotoError:
+        return "Photo not found.", 404
+
+    response = Response(photo, content_type=content_type)
+    response.headers["Cache-Control"] = "private, max-age=3600"
+    return response
 
 
 @main.route("/plants/<int:plant_id>/snooze", methods=["POST"])

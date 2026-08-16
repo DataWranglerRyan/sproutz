@@ -30,6 +30,10 @@ def ensure_runtime_schema(app):
     plant_columns = get_columns("plant")
     if "snoozed_until" not in plant_columns:
         db.session.execute(text("ALTER TABLE plant ADD COLUMN snoozed_until DATETIME"))
+    if "photo_blob_name" not in plant_columns:
+        db.session.execute(
+            text("ALTER TABLE plant ADD COLUMN photo_blob_name VARCHAR(255)")
+        )
 
     db.session.commit()
 
@@ -41,6 +45,12 @@ def ensure_postgres_schema(app):
         return
 
     db.session.execute(text("CREATE SCHEMA IF NOT EXISTS sproutz"))
+    db.session.execute(
+        text(
+            "ALTER TABLE IF EXISTS plant "
+            "ADD COLUMN IF NOT EXISTS photo_blob_name VARCHAR(255)"
+        )
+    )
     db.session.commit()
 
 

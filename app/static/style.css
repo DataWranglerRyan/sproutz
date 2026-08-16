@@ -274,6 +274,27 @@ h2 {
     border-left: 3px solid var(--alert);
 }
 
+.plant-photo-thumbnail {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--pebble);
+    border-radius: 50%;
+    background: var(--sand-warm);
+    cursor: zoom-in;
+}
+
+.plant-photo-thumbnail img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .plant-card-header {
     display: flex;
     justify-content: space-between;
@@ -301,11 +322,14 @@ h2 {
 
 .plant-card-details {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-top: 0.5rem;
     font-size: 0.8rem;
     color: var(--stone-light);
+}
+
+.plant-card-details i {
+    margin-right: 0.25rem;
 }
 
 .plant-info-btn {
@@ -338,7 +362,7 @@ h2 {
     margin-bottom: 0;
 }
 
-.plant-card-actions > form:not(.delete-form):not(.undo-form) {
+.plant-card-actions > form {
     flex: 1;
 }
 
@@ -349,25 +373,82 @@ h2 {
     font-size: 0.9rem;
 }
 
-.plant-card-actions .delete-form {
+.plant-card-more {
+    position: relative;
     flex: 0 0 auto;
 }
 
-.snooze-btn {
-    flex: 0 0 auto;
-}
-
-.plant-card-actions .snooze-btn,
-.plant-card-actions .undo {
+.plant-card-actions .plant-card-more-toggle {
     width: 2.25rem;
     height: 2.25rem;
     padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.74rem;
+    font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 0.01em;
+    background: transparent;
+    color: var(--stone-light);
+    border: 1px solid transparent;
+}
+
+.plant-card-actions .plant-card-more-toggle:hover,
+.plant-card-more.open .plant-card-more-toggle {
+    background: var(--sand-warm);
+    color: var(--moss-muted);
+    border-color: var(--pebble);
+}
+
+.plant-card-more-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 0.5rem);
+    z-index: 20;
+    min-width: 11.5rem;
+    padding: 0.25rem;
+    border: 1px solid rgba(216, 211, 201, 0.75);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.plant-card-more.open .plant-card-more-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.plant-card-more-menu form {
+    margin: 0;
+}
+
+.plant-card-actions .plant-card-more-menu .plant-card-secondary-action {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0.6rem 0.7rem;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--stone);
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-align: left;
+}
+
+.plant-card-actions .plant-card-more-menu .plant-card-secondary-action:hover {
+    background: var(--sand-warm);
+}
+
+.plant-card-actions .plant-card-more-menu .delete-action {
+    color: var(--alert);
+}
+
+.plant-card-actions .plant-card-more-menu .delete-action:hover {
+    background: var(--alert-light);
 }
 
 /* ─── Tables ─── */
@@ -423,6 +504,11 @@ tr.overdue {
 .badge.overdue {
     background: var(--alert-light);
     color: var(--alert);
+}
+
+.badge.due-today {
+    background: var(--water-light);
+    color: var(--water);
 }
 
 .badge.ok {
@@ -1405,6 +1491,23 @@ body:has(.species-detail-page) .container {
     padding: 1.5rem;
     animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-overflow-scrolling: touch;
+}
+
+.photo-viewer-sheet {
+    max-width: min(640px, calc(100% - 2rem));
+}
+
+.plant-photo-full-size {
+    display: block;
+    width: 100%;
+    max-height: calc(70vh - 5rem);
+    object-fit: contain;
+}
+
+.photo-upload-help {
+    margin: 0.5rem 0 1rem;
+    color: var(--stone-light);
+    font-size: 0.8rem;
 }
 
 @keyframes slideUp {
